@@ -31,6 +31,8 @@ Author: SCOUT Development Team
 License: MIT
 """
 
-# Public API will be populated after loader.py is implemented
-__all__ = []
+# Public API exports
+from scout.config.loader import load_config
+
+__all__ = ["load_config"]
 __version__ = "0.1.0"

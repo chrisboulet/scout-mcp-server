@@ -1,0 +1,19 @@
+# Invalid configuration - missing required api_key in provider
+# Should raise ConfigValidationError
+
+providers:
+  gemini:
+    # MISSING: api_key field (required)
+    models:
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+
+teams:
+  general:
+    description: "General team"
+    primary:
+      provider: "gemini"
+      model: "flash"
+
+tool_team_mapping: {}

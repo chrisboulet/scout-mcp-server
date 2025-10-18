@@ -181,7 +181,7 @@ markers = [
     "integration: marks integration tests (need real dependencies)",
     "unit: marks unit tests (fully mocked)",
 ]
-asyncio_mode = "auto"
+# asyncio_mode = "auto"  # Temporarily disabled - will be configured later if needed
 
 # ==============================================================================
 # COVERAGE - Test Coverage

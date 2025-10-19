@@ -75,11 +75,11 @@ A developer needs different configurations for development, staging, and product
 ### Edge Cases
 
 - What happens when the configuration file is malformed YAML (syntax errors)?
-- What happens when a required environment variable is set but empty (e.g., `API_KEY=""`)?
-- How does the system handle circular references in configuration (if one setting depends on another)?
-- What happens when configuration file is missing entirely at startup?
-- How are configuration updates handled during runtime (hot reload vs. restart required)?
-- What happens when environment variable substitution results in invalid type (e.g., string when number expected)?
+- What happens when a required environment variable is set but empty (e.g., `API_KEY=""`)? → Empty string is treated as valid; different from missing variable
+- How does the system handle circular references in configuration (if one setting depends on another)? → Circular references are rejected with clear error message
+- What happens when configuration file is missing entirely at startup? → Raises ConfigFileNotFoundError immediately
+- How are configuration updates handled during runtime? → Configuration requires restart (no hot reload)
+- What happens when environment variable substitution results in invalid type (e.g., string when number expected)? → Raises ConfigValidationError with field name and expected type
 
 ## Requirements *(mandatory)*
 
@@ -99,7 +99,8 @@ A developer needs different configurations for development, staging, and product
 - **FR-012**: System MUST report validation errors with specific location information (file, line, field) when possible
 - **FR-013**: System MUST support default values for optional configuration fields
 - **FR-014**: System MUST validate environment variables are set when referenced in configuration
-- **FR-015**: System MUST load configuration exactly once at startup (immutable during runtime)
+- **FR-015**: System MUST load configuration exactly once at startup (immutable during runtime using frozen Pydantic models)
+- **FR-016**: System MUST redact sensitive values (API keys, tokens, passwords) in all outputs including logs, error messages, and serialization
 
 ### Key Entities
 
@@ -115,7 +116,7 @@ A developer needs different configurations for development, staging, and product
 ### Measurable Outcomes
 
 - **SC-001**: Configuration validation completes in under 1 second for typical configuration files (<100 providers/teams)
-- **SC-002**: 100% of configuration errors are detected before application startup (fail-fast principle)
+- **SC-002**: 100% of configuration errors are detected before application startup (fail-fast principle) with ≥80% test coverage per Constitution Principle III
 - **SC-003**: Error messages for configuration validation include specific field names and expected formats in 100% of cases
 - **SC-004**: Zero runtime errors due to missing or invalid configuration once validation passes
 - **SC-005**: Developers can add a new AI provider by editing only the configuration file in under 5 minutes
@@ -125,7 +126,7 @@ A developer needs different configurations for development, staging, and product
 ## Assumptions
 
 1. **Configuration Format**: YAML format is preferred for human readability and hierarchical structure support
-2. **Environment Variables**: Standard environment variable syntax (`${VAR}`) is sufficient; no complex interpolation needed initially
+2. **Environment Variables**: Standard environment variable syntax (`${VAR}`) with optional default values (`${VAR:-default}`) is supported; no complex interpolation or nested substitutions needed
 3. **Validation Timing**: Configuration is validated once at startup; runtime updates require application restart
 4. **Type System**: Strong typing is enforced to catch errors early (no string values where numbers expected)
 5. **Error Reporting**: Detailed error messages are acceptable during development; production may require simplified messages

@@ -143,7 +143,7 @@
 - [ ] [T068] [P2] [US3] Implement cross-field validation in `ScoutConfig`: validate team references to providers
 - [ ] [T069] [P2] [US3] Implement `@model_validator` in `TeamConfig`: validate primary model exists in providers
 - [ ] [T070] [P2] [US3] Implement `@model_validator` in `TeamConfig`: validate all validator models exist in providers
-- [ ] [T071] [P2] [US3] Validate trigger conditions syntax (basic check for "always" or "confidence < X")
+- [ ] [T071] [P2] [US3] Validate trigger conditions are exactly one of: "always", "on_error", or "random" (no expressions allowed per Constitution Principle V)
 - [ ] [T072] [P2] [US3] Add validation: team names are unique
 - [ ] [T073] [P2] [US3] Add validation: tool_team_mapping references existing teams
 - [ ] [T074] [P2] [US3] Document team schema in `data-model.md` with examples
@@ -228,8 +228,10 @@
 ### Final Validation
 
 - [ ] [T110] [P1] Run full test suite: `pytest tests/`
+- [ ] [T110a] [P1] [FR-008] Test type-safe access after config loads (no runtime type errors when accessing config fields)
+- [ ] [T110b] [P1] [FR-011] Test deeply nested configuration structures (providers → models → settings → sub-settings)
 - [ ] [T111] [P1] Run coverage report: `pytest --cov=src/scout/config --cov-report=term-missing --cov-fail-under=80`
-- [ ] [T112] [P1] Verify all 15 functional requirements (FR-001 through FR-015) implemented
+- [ ] [T112] [P1] Verify all 16 functional requirements (FR-001 through FR-016) implemented
 - [ ] [T113] [P1] Verify all 7 success criteria (SC-001 through SC-007) validated
 - [ ] [T114] [P1] Verify all 13 acceptance scenarios pass (4 US1 + 3 US2 + 3 US3 + 3 US4)
 - [ ] [T115] [P2] Run type checking: `mypy src/scout/config/`
@@ -245,9 +247,9 @@
 
 ## Task Summary
 
-**Total Tasks**: 120
+**Total Tasks**: 122
 **By Priority**:
-- P1 (Critical): 82 tasks
+- P1 (Critical): 84 tasks
 - P2 (High): 36 tasks
 - P3 (Medium): 2 tasks
 

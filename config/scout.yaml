@@ -1,0 +1,304 @@
+# SCOUT MCP Server - Configuration Example
+# =========================================
+#
+# This file demonstrates comprehensive configuration for the SCOUT MCP Server,
+# a multi-provider AI orchestration system following the Model Context Protocol.
+#
+# Quick Start:
+#   1. Copy this file to config/scout.yaml
+#   2. Replace placeholder API keys with your actual keys
+#   3. Customize teams and system settings for your use case
+#   4. Use environment variables for sensitive values (recommended)
+#
+# Environment Variable Substitution:
+#   - Required: ${VAR_NAME} - variable must be set
+#   - Optional: ${VAR_NAME:-default_value} - uses default if not set
+#
+# Documentation: See specs/001-config-system/ for detailed documentation
+
+# ==============================================================================
+# AI PROVIDERS
+# ==============================================================================
+#
+# Configure one or more AI providers. Each provider requires an API key and
+# at least one model configuration.
+#
+# Supported providers: Gemini, OpenAI, Anthropic, OpenRouter, Grok (and more)
+
+providers:
+  # Google Gemini - Fast and cost-effective models
+  gemini:
+    # API key (required) - use env var for security
+    api_key: "${GEMINI_API_KEY}"
+
+    # Models configuration (at least one required)
+    models:
+      # Gemini Flash - Ultra-fast for quick exploration
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+        temperature: 0.7
+        cost_per_1k_input: 0.0001    # $0.0001 per 1K input tokens
+        cost_per_1k_output: 0.0002   # $0.0002 per 1K output tokens
+
+      # Gemini Pro - Advanced reasoning for complex tasks
+      pro:
+        id: "gemini-2.0-pro-exp"
+        max_tokens: 32768
+        temperature: 0.5
+        cost_per_1k_input: 0.001
+        cost_per_1k_output: 0.002
+
+  # OpenAI - Industry-leading models
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    models:
+      # GPT-4o - Versatile and powerful
+      gpt4o:
+        id: "gpt-4o"
+        max_tokens: 16384
+        temperature: 0.7
+        cost_per_1k_input: 0.005
+        cost_per_1k_output: 0.015
+
+      # GPT-4o-mini - Fast and economical
+      gpt4o-mini:
+        id: "gpt-4o-mini"
+        max_tokens: 16384
+        temperature: 0.7
+        cost_per_1k_input: 0.00015
+        cost_per_1k_output: 0.0006
+
+  # Anthropic Claude - Best-in-class reasoning
+  anthropic:
+    api_key: "${ANTHROPIC_API_KEY}"
+    models:
+      # Claude Sonnet - Balanced performance
+      sonnet:
+        id: "claude-3-5-sonnet-20241022"
+        max_tokens: 8192
+        temperature: 0.7
+        cost_per_1k_input: 0.003
+        cost_per_1k_output: 0.015
+
+      # Claude Haiku - Ultra-fast responses
+      haiku:
+        id: "claude-3-5-haiku-20241022"
+        max_tokens: 8192
+        temperature: 0.7
+        cost_per_1k_input: 0.0008
+        cost_per_1k_output: 0.004
+
+  # OpenRouter - Access to multiple models via single API
+  openrouter:
+    api_key: "${OPENROUTER_API_KEY:-}"  # Optional provider
+    models:
+      # DeepSeek - Powerful open-source model
+      deepseek:
+        id: "deepseek/deepseek-r1"
+        max_tokens: 8192
+        temperature: 0.7
+        cost_per_1k_input: 0.00055
+        cost_per_1k_output: 0.0022
+
+  # Grok - X.AI's powerful reasoning model
+  grok:
+    api_key: "${GROK_API_KEY:-}"  # Optional provider
+    models:
+      beta:
+        id: "grok-beta"
+        max_tokens: 32768
+        temperature: 0.7
+        cost_per_1k_input: 0.005
+        cost_per_1k_output: 0.015
+
+# ==============================================================================
+# TEAMS
+# ==============================================================================
+#
+# Teams define AI agent configurations for different use cases.
+# Each team has a primary model and optional validators for consensus-based decisions.
+
+teams:
+  # Scout Team - Quick exploration and initial analysis
+  scout:
+    description: "Fast exploration team for quick research and initial code analysis"
+
+    # Primary model - handles main requests
+    primary:
+      provider: "gemini"
+      model: "flash"
+
+    # Validators - verify primary model outputs (optional)
+    validators:
+      - provider: "openai"
+        model: "gpt4o-mini"
+        trigger: "on_error"  # Only validate if primary fails
+
+    # Use cases this team is optimized for
+    use_cases:
+      - "quick_research"
+      - "initial_exploration"
+      - "simple_queries"
+
+  # Architect Team - System design and architecture decisions
+  architect:
+    description: "Architecture team for system design and strategic decisions"
+
+    primary:
+      provider: "gemini"
+      model: "pro"
+
+    validators:
+      - provider: "anthropic"
+        model: "sonnet"
+        trigger: "always"  # Always validate for critical decisions
+
+      - provider: "openai"
+        model: "gpt4o"
+        trigger: "random"  # Randomly validate for quality assurance
+
+    use_cases:
+      - "system_design"
+      - "architecture_review"
+      - "technical_decisions"
+
+  # Expert Team - Deep analysis and consensus-based decisions
+  expert:
+    description: "Expert team for deep analysis requiring multi-model consensus"
+
+    primary:
+      provider: "anthropic"
+      model: "sonnet"
+
+    validators:
+      - provider: "gemini"
+        model: "pro"
+        trigger: "always"
+
+      - provider: "openai"
+        model: "gpt4o"
+        trigger: "always"
+
+    use_cases:
+      - "deep_analysis"
+      - "consensus_decision"
+      - "critical_code_review"
+
+# ==============================================================================
+# TOOL TEAM MAPPING
+# ==============================================================================
+#
+# Maps specific tools/operations to teams. When a tool is invoked,
+# the corresponding team handles the request.
+
+tool_team_mapping:
+  # Research and exploration tools
+  quick_research: "scout"
+  initial_exploration: "scout"
+  simple_query: "scout"
+
+  # Architecture and design tools
+  system_design: "architect"
+  architecture_review: "architect"
+  technical_decision: "architect"
+
+  # Deep analysis tools
+  deep_analysis: "expert"
+  consensus_decision: "expert"
+  code_review: "expert"
+  security_audit: "expert"
+
+# ==============================================================================
+# SYSTEM SETTINGS
+# ==============================================================================
+#
+# Global system configuration affecting all teams and providers
+
+system:
+  # Default team for unmapped tools (required)
+  default_team: "scout"
+
+  # Request timeout in seconds (default: 90)
+  # Use env var for environment-specific values
+  request_timeout_seconds: ${REQUEST_TIMEOUT:-90}
+
+  # Maximum retry attempts for failed requests (default: 3)
+  max_retries: 3
+
+  # Cache TTL in seconds for repeated requests (default: 7200 = 2 hours)
+  cache_ttl_seconds: ${CACHE_TTL:-7200}
+
+  # Optional Redis URL for distributed caching
+  # Leave null for in-memory caching
+  redis_url: ${REDIS_URL:-}
+
+# ==============================================================================
+# INTEGRATIONS
+# ==============================================================================
+#
+# Optional third-party integrations for extended functionality
+
+integrations:
+  # Notion API for workspace integration (optional)
+  # Required for Notion-based knowledge management features
+  notion_api_key: ${NOTION_API_KEY:-}
+
+  # Tavily API for web search integration (optional)
+  # Required for real-time web search and research features
+  tavily_api_key: ${TAVILY_API_KEY:-}
+
+# ==============================================================================
+# CONFIGURATION TIPS
+# ==============================================================================
+#
+# 1. Security Best Practices:
+#    - Always use environment variables for API keys
+#    - Never commit real API keys to version control
+#    - Use ${VAR:-} syntax for optional keys
+#
+# 2. Team Design:
+#    - Scout: Fast models for quick iteration
+#    - Architect: Balanced models with always-on validation
+#    - Expert: Best models with multi-validator consensus
+#
+# 3. Cost Optimization:
+#    - Use fast models (Flash, Haiku, GPT-4o-mini) for scout team
+#    - Reserve expensive models (GPT-4o, Claude Sonnet) for critical tasks
+#    - Use "on_error" validators to reduce costs
+#
+# 4. Performance Tuning:
+#    - Adjust request_timeout_seconds based on use case
+#    - Use Redis for distributed deployments
+#    - Set appropriate cache_ttl_seconds for your workflow
+#
+# 5. Adding New Providers:
+#    - Add provider with unique name under "providers"
+#    - Configure at least one model
+#    - Reference in team configurations
+#    - Map tools to teams using the provider
+#
+# ==============================================================================
+# ENVIRONMENT VARIABLES REFERENCE
+# ==============================================================================
+#
+# Required (must be set):
+#   - GEMINI_API_KEY: Google AI API key
+#   - OPENAI_API_KEY: OpenAI API key
+#   - ANTHROPIC_API_KEY: Anthropic API key
+#
+# Optional (with defaults or can be null):
+#   - OPENROUTER_API_KEY: OpenRouter API key
+#   - GROK_API_KEY: X.AI Grok API key
+#   - REQUEST_TIMEOUT: Request timeout in seconds (default: 90)
+#   - CACHE_TTL: Cache TTL in seconds (default: 7200)
+#   - REDIS_URL: Redis connection URL (default: null, uses in-memory)
+#   - NOTION_API_KEY: Notion API key (default: null, disabled)
+#   - TAVILY_API_KEY: Tavily API key (default: null, disabled)
+#
+# Example .env file:
+#   GEMINI_API_KEY=your-gemini-key-here
+#   OPENAI_API_KEY=your-openai-key-here
+#   ANTHROPIC_API_KEY=your-anthropic-key-here
+#   REQUEST_TIMEOUT=120
+#   CACHE_TTL=3600

@@ -192,7 +192,7 @@ class DeepAnalystTool(BaseTool):
         require_high_confidence: bool = True,
         use_cross_validation: bool = False,
         team_context: Optional[Dict[str, Any]] = None,
-        provider: Optional[BaseAIProvider] = None
+        provider: Optional[Any] = None  # BaseAIProvider - injected by server
     ) -> Dict[str, Any]:
         """
         Execute deep investigation.

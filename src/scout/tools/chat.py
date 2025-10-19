@@ -199,8 +199,8 @@ class ChatTool(BaseTool):
         temperature: Optional[float] = None,
         team_override: Optional[str] = None,
         team_context: Optional[Dict[str, Any]] = None,
-        provider: Optional[BaseAIProvider] = None,
-        state_manager: Optional[StateManager] = None
+        provider: Optional[Any] = None,  # BaseAIProvider - injected by server
+        state_manager: Optional[Any] = None  # StateManager - injected by server
     ) -> Dict[str, Any]:
         """
         Execute chat conversation with real AI provider.

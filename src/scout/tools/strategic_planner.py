@@ -215,7 +215,7 @@ class StrategicPlannerTool(BaseTool):
         include_alternatives: bool = False,
         focus_areas: Optional[List[str]] = None,
         team_context: Optional[Dict[str, Any]] = None,
-        provider: Optional[BaseAIProvider] = None
+        provider: Optional[Any] = None  # BaseAIProvider - injected by server
     ) -> Dict[str, Any]:
         """
         Execute strategic planning.

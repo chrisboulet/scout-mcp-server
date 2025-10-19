@@ -36,18 +36,11 @@ async def test_consensus_builder():
     server = ScoutMCPServer()
     await server.initialize()
 
-    # Get available tools
-    tools = server.list_tools()
-    print(f"   📦 {len(tools)} tools discovered")
+    # Check if consensus_builder tool is registered
+    tool_names = server.tool_registry.list_tools(include_deprecated=False)
+    print(f"   📦 {len(tool_names)} tools discovered: {', '.join(tool_names)}")
 
-    # Find consensus_builder tool
-    consensus_tool = None
-    for tool in tools:
-        if tool["name"] == "consensus_builder":
-            consensus_tool = tool
-            break
-
-    if not consensus_tool:
+    if "consensus_builder" not in tool_names:
         print("❌ Consensus Builder tool not found!")
         await server.cleanup()
         return

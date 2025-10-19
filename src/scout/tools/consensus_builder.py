@@ -15,10 +15,14 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from enum import Enum
 
+import structlog
 from pydantic import BaseModel, Field
 
-from scout.providers.base import BaseAIProvider, Message, Role
+from scout.providers.base import Message, Role
 from scout.core.tool_registry import BaseTool, ToolCategory
+
+# Module-level logger
+logger = structlog.get_logger(__name__)
 
 
 class ConfidenceLevel(str, Enum):
@@ -136,9 +140,9 @@ class ConsensusBuilderTool(BaseTool):
         tie_breaking: bool = True,
         min_confidence: str = "medium",
         # Runtime dependencies (injected by server, not in tool schema)
-        provider: Optional[BaseAIProvider] = None,
+        provider: Optional[Any] = None,  # BaseAIProvider
         state_manager: Optional[Any] = None,
-        available_providers: Optional[Dict[str, BaseAIProvider]] = None,
+        available_providers: Optional[Dict[str, Any]] = None,  # Dict[str, BaseAIProvider]
         team_context: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
@@ -161,11 +165,11 @@ class ConsensusBuilderTool(BaseTool):
         """
         start_time = datetime.now(timezone.utc)
 
-        self.logger.info(
+        logger.info(
             "Consensus building started",
             question_length=len(question),
             providers_requested=len(providers_to_query) if providers_to_query else "all",
-            tool=self.name
+            tool="consensus_builder"
         )
 
         # Get available providers
@@ -181,10 +185,10 @@ class ConsensusBuilderTool(BaseTool):
         if len(selected_providers) < 2:
             raise ValueError("Consensus requires at least 2 providers")
 
-        self.logger.info(
+        logger.info(
             f"Querying {len(selected_providers)} providers",
             providers=list(selected_providers.keys()),
-            tool=self.name
+            tool="consensus_builder"
         )
 
         # Step 1: Query all providers in parallel
@@ -203,7 +207,7 @@ class ConsensusBuilderTool(BaseTool):
 
         # Step 3: Check if tie-breaking needed
         if tie_breaking and self._needs_tie_breaking(disagreements, provider_responses):
-            self.logger.info("Tie detected, initiating tie-breaking", tool=self.name)
+            logger.info("Tie detected, initiating tie-breaking", tool="consensus_builder")
             tie_breaker_response = await self._perform_tie_breaking(
                 selected_providers,
                 provider_responses,
@@ -244,10 +248,10 @@ class ConsensusBuilderTool(BaseTool):
 
         # Step 8: Check unanimity requirement
         if require_unanimity and disagreements:
-            self.logger.warning(
+            logger.warning(
                 "Unanimity required but disagreements found",
                 disagreement_count=len(disagreements),
-                tool=self.name
+                tool="consensus_builder"
             )
 
         # Calculate stats
@@ -266,7 +270,7 @@ class ConsensusBuilderTool(BaseTool):
             duration_seconds=duration
         )
 
-        self.logger.info(
+        logger.info(
             "Consensus building completed",
             providers=len(provider_responses),
             agreements=len(agreements),
@@ -274,16 +278,16 @@ class ConsensusBuilderTool(BaseTool):
             confidence=consensus_confidence,
             diversity=f"{diversity_score:.2f}",
             duration_seconds=duration,
-            tool=self.name
+            tool="consensus_builder"
         )
 
         return result.model_dump()
 
     def _select_providers(
         self,
-        available_providers: Dict[str, BaseAIProvider],
+        available_providers: Dict[str, Any],
         requested_providers: Optional[List[str]]
-    ) -> Dict[str, BaseAIProvider]:
+    ) -> Dict[str, Any]:
         """Select providers for consensus building."""
         if requested_providers:
             selected = {
@@ -300,7 +304,7 @@ class ConsensusBuilderTool(BaseTool):
 
     async def _query_providers_parallel(
         self,
-        providers: Dict[str, BaseAIProvider],
+        providers: Dict[str, Any],
         question: str,
         context: Optional[str],
         team_context: Optional[Dict[str, Any]]
@@ -322,10 +326,10 @@ class ConsensusBuilderTool(BaseTool):
         for i, response in enumerate(responses):
             if isinstance(response, Exception):
                 provider_name = list(providers.keys())[i]
-                self.logger.error(
+                logger.error(
                     f"Provider {provider_name} failed",
                     error=str(response),
-                    tool=self.name
+                    tool="consensus_builder"
                 )
             else:
                 valid_responses.append(response)
@@ -374,7 +378,7 @@ ASSUMPTIONS:
     async def _query_single_provider(
         self,
         provider_name: str,
-        provider: BaseAIProvider,
+        provider: Any,
         prompt: str,
         team_context: Optional[Dict[str, Any]]
     ) -> ProviderResponse:
@@ -384,10 +388,10 @@ ASSUMPTIONS:
         # Select model from team context
         model = team_context.get("model", "unknown") if team_context else "unknown"
 
-        self.logger.debug(
+        logger.debug(
             f"Querying provider {provider_name}",
             model=model,
-            tool=self.name
+            tool="consensus_builder"
         )
 
         response = await provider.chat(
@@ -522,7 +526,7 @@ ASSUMPTIONS:
 
     async def _perform_tie_breaking(
         self,
-        all_providers: Dict[str, BaseAIProvider],
+        all_providers: Dict[str, Any],
         current_responses: List[ProviderResponse],
         question: str,
         context: Optional[str],
@@ -539,7 +543,7 @@ ASSUMPTIONS:
         }
 
         if not available_tie_breakers:
-            self.logger.warning("No additional provider available for tie-breaking", tool=self.name)
+            logger.warning("No additional provider available for tie-breaking", tool="consensus_builder")
             return None
 
         # Use the first available tie-breaker

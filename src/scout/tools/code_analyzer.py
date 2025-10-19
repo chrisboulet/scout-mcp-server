@@ -486,7 +486,7 @@ Keep your response concise (max 500 words)."""
         analysis_type: str = "comprehensive",
         use_ai: bool = True,
         team_context: Optional[Dict[str, Any]] = None,
-        provider: Optional[BaseAIProvider] = None
+        provider: Optional[Any] = None  # BaseAIProvider - injected by server
     ) -> Dict[str, Any]:
         """
         Execute comprehensive code analysis.

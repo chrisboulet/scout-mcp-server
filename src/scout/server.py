@@ -32,7 +32,7 @@ import asyncio
 import structlog
 from fastmcp import FastMCP
 
-from scout.config.loader import ConfigLoader
+from scout.config.loader import load_config
 from scout.config.models import ScoutConfig
 from scout.config.exceptions import ConfigurationError
 from scout.core.team_selector import TeamSelector
@@ -91,12 +91,19 @@ class ScoutMCPServer:
             self.config = config
             self.logger.info("Using provided configuration")
         elif config_path:
-            self.config = ConfigLoader.load_config(config_path)
+            self.config = load_config(str(config_path))
             self.logger.info("Loaded configuration from file", path=str(config_path))
         else:
-            # Try to load from default locations
-            self.config = ConfigLoader.load_from_env()
-            self.logger.info("Loaded configuration from environment")
+            # Try to load from environment variable or default location
+            import os
+            default_path = os.getenv("SCOUT_CONFIG", "config.yaml")
+            try:
+                self.config = load_config(default_path)
+                self.logger.info("Loaded configuration from default", path=default_path)
+            except Exception as e:
+                raise ConfigurationError(
+                    f"No configuration provided and default config not found: {e}"
+                )
 
         # Initialize FastMCP server
         self.mcp = FastMCP(

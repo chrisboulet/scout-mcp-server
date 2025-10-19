@@ -175,7 +175,7 @@ class ProviderFactory:
 
         # Use system settings for defaults
         max_retries = kwargs.pop("max_retries", scout_config.system.max_retries)
-        timeout = kwargs.pop("timeout", scout_config.system.request_timeout)
+        timeout = kwargs.pop("timeout", scout_config.system.request_timeout_seconds)
 
         return cls.create_provider(
             provider_name=provider_name,

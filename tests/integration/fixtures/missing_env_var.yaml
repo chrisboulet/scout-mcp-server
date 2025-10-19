@@ -1,0 +1,31 @@
+# Configuration with missing required environment variable
+# Should raise EnvironmentVariableError with variable name
+# Used for User Story 4 Acceptance Scenario 2
+
+providers:
+  gemini:
+    api_key: "${MISSING_REQUIRED_VAR}"  # INVALID: Required variable not set
+    models:
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+
+teams:
+  general:
+    description: "General purpose team"
+    primary:
+      provider: "gemini"
+      model: "flash"
+
+tool_team_mapping:
+  general_query: "general"
+
+system:
+  default_team: "general"
+  request_timeout_seconds: 90
+  max_retries: 3
+  cache_ttl_seconds: 7200
+
+integrations:
+  notion_api_key: null
+  tavily_api_key: null

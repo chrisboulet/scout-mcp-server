@@ -1,0 +1,32 @@
+# Configuration with environment variable overrides
+# Tests environment variable substitution with defaults
+# Used for User Story 4 Acceptance Scenarios
+
+providers:
+  gemini:
+    api_key: "${GEMINI_API_KEY:-sk-test-default-key}"
+    models:
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+        temperature: 0.7
+
+teams:
+  general:
+    description: "General purpose team"
+    primary:
+      provider: "gemini"
+      model: "flash"
+
+tool_team_mapping:
+  general_query: "general"
+
+system:
+  default_team: "general"
+  request_timeout_seconds: "${REQUEST_TIMEOUT:-90}"
+  max_retries: 3
+  cache_ttl_seconds: "${CACHE_TTL:-7200}"
+
+integrations:
+  notion_api_key: "${NOTION_API_KEY}"
+  tavily_api_key: "${TAVILY_API_KEY:-default-tavily-key}"

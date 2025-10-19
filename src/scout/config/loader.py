@@ -132,7 +132,7 @@ def _substitute_env_var(match: re.Match) -> str:
 
         value = os.environ.get(var_name)
         if value is None:
-            logger.debug(
+            logger.info(
                 "env_var_using_default", variable=var_name, default=_redact_value(default_value)
             )
             return default_value
@@ -186,8 +186,8 @@ def _substitute_env_vars(data: Any) -> Any:
 def _redact_value(value: str) -> str:
     """Redact sensitive values for logging.
 
-    Redacts values that look like API keys or secrets to prevent leaking
-    sensitive information in logs.
+    Redacts values that look like API keys, passwords, or secrets to prevent
+    leaking sensitive information in logs.
 
     Args:
         value: String value to potentially redact
@@ -195,8 +195,9 @@ def _redact_value(value: str) -> str:
     Returns:
         Redacted string (first 3 chars + "***") or original if not sensitive
     """
-    # Redact if value looks like an API key (contains common prefixes)
-    if any(prefix in value.lower() for prefix in ["key", "secret", "token", "sk-", "api"]):
+    # Redact if value looks like a sensitive credential
+    sensitive_patterns = ["key", "secret", "token", "sk-", "api", "password", "passwd", "pwd"]
+    if any(prefix in value.lower() for prefix in sensitive_patterns):
         if len(value) <= 3:
             return "***"
         return f"{value[:3]}***"

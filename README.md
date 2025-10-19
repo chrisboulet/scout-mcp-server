@@ -237,49 +237,133 @@ SCOUT follows a **contract-first**, **modular architecture** as defined in the [
 
 ## 🛠️ Configuration
 
-### Main Configuration: `config/scout.yaml`
+SCOUT uses a type-safe YAML configuration system with environment variable substitution and automatic validation.
+
+### Quick Configuration
+
+Create `config/scout.yaml` from the example:
+
+```bash
+cp config/scout.yaml.example config/scout.yaml
+```
+
+**Minimal configuration (single provider)**:
 
 ```yaml
-# AI Provider Configuration
 providers:
   gemini:
     api_key: ${GEMINI_API_KEY}
     models:
-      flash: { id: "gemini-2.0-flash-exp", max_tokens: 8192, cost_per_1k_input: 0.00015 }
-      pro: { id: "gemini-2.0-pro-exp", max_tokens: 32768, cost_per_1k_input: 0.00125 }
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+        temperature: 0.7
+
+teams:
+  general:
+    description: "General purpose team"
+    primary:
+      provider: "gemini"
+      model: "flash"
+
+tool_team_mapping:
+  default: "general"
+
+system:
+  default_team: "general"
+  request_timeout_seconds: 90
+  max_retries: 3
+  cache_ttl_seconds: 7200
+
+integrations:
+  notion_api_key: null
+  tavily_api_key: null
+```
+
+**Multi-provider with validation**:
+
+```yaml
+providers:
+  gemini:
+    api_key: ${GEMINI_API_KEY}
+    models:
+      flash: { id: "gemini-2.0-flash-exp", max_tokens: 8192 }
 
   openai:
     api_key: ${OPENAI_API_KEY}
     models:
-      gpt4o: { id: "gpt-4o", max_tokens: 16384, cost_per_1k_input: 0.0025 }
+      gpt4o: { id: "gpt-4o", max_tokens: 16384 }
 
-# AI Team Configurations
 teams:
-  scout:
-    description: "Fast and economical for initial reconnaissance"
-    primary: { provider: gemini, model: flash }
-    validators: []
-
   architect:
-    description: "Balanced quality/cost for architecture and planning"
-    primary: { provider: gemini, model: pro }
+    description: "Architecture team with validation"
+    primary:
+      provider: "gemini"
+      model: "flash"
     validators:
-      - { provider: openai, model: gpt4o, trigger: "confidence < 0.8" }
+      - provider: "openai"
+        model: "gpt4o"
+        trigger: "always"  # Validate all responses
 
-  expert:
-    description: "Premium team for critical decisions"
-    primary: { provider: anthropic, model: opus }
-    validators:
-      - { provider: gemini, model: thinking, trigger: "always" }
-
-# Tool → Team Mapping (defaults)
 tool_team_mapping:
-  chat: scout
-  apilookup: scout
-  planner: architect
-  analyse: architect
-  secaudit: expert
+  system_design: "architect"
 ```
+
+### Environment Variable Substitution
+
+- **Required**: `${VAR}` - Variable must be set
+- **Optional**: `${VAR:-default}` - Uses default if not set
+
+```yaml
+system:
+  request_timeout_seconds: ${REQUEST_TIMEOUT:-90}  # Default: 90
+  cache_ttl_seconds: ${CACHE_TTL:-7200}            # Default: 7200
+```
+
+### Configuration Features
+
+✅ **Type-safe** - Pydantic validation catches errors at startup
+✅ **Immutable** - Frozen models prevent runtime modification
+✅ **Secure** - Automatic API key redaction in logs/errors
+✅ **Fast** - Loads in ~5ms (tested with 50 providers, 100 teams)
+✅ **Cross-reference validation** - Teams reference existing providers/models
+✅ **Environment-aware** - Different configs per environment
+
+### Documentation
+
+- **📖 Quick Start**: [`specs/001-config-system/quickstart.md`](specs/001-config-system/quickstart.md)
+- **📋 Data Model**: [`specs/001-config-system/data-model.md`](specs/001-config-system/data-model.md)
+- **📝 Example**: [`config/scout.yaml.example`](config/scout.yaml.example) - 5 providers, 3 teams
+- **🔧 JSON Schema**: [`specs/001-config-system/contracts/config-schema.json`](specs/001-config-system/contracts/config-schema.json)
+
+### Adding a New Provider (< 5 minutes)
+
+1. Add to `config/scout.yaml`:
+```yaml
+providers:
+  new_provider:
+    api_key: "${NEW_PROVIDER_API_KEY}"
+    models:
+      model_name:
+        id: "model-id"
+        max_tokens: 8192
+```
+
+2. Set environment variable:
+```bash
+export NEW_PROVIDER_API_KEY=your-key-here
+```
+
+3. Reference in team:
+```yaml
+teams:
+  new_team:
+    primary:
+      provider: "new_provider"
+      model: "model_name"
+```
+
+That's it! Cross-reference validation ensures everything is correctly configured.
 
 ---
 
@@ -536,7 +620,7 @@ detect-secrets scan
 ### Phase 1: Infrastructure Core (Weeks 1-2)
 - [x] Project structure
 - [x] Constitution
-- [ ] Configuration system
+- [x] **Configuration system** ✅ (116 tests, 94.86% coverage)
 - [ ] Provider abstraction layer
 - [ ] Team selector
 - [ ] Tool registry

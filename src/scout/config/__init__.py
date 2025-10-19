@@ -31,7 +31,6 @@ Author: SCOUT Development Team
 License: MIT
 """
 
-# Public API exports
 from scout.config.loader import load_config
 
 __all__ = ["load_config"]

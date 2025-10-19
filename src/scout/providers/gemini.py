@@ -267,7 +267,11 @@ class GeminiProvider(BaseAIProvider):
         finish_reason = None
         if "candidates" in raw_response and raw_response["candidates"]:
             candidate = raw_response["candidates"][0]
-            finish_reason = candidate.get("finish_reason", "").lower()
+            # Handle protobuf object - use attribute access instead of dict.get()
+            if hasattr(candidate, "finish_reason"):
+                finish_reason = str(candidate.finish_reason).lower()
+            elif isinstance(candidate, dict):
+                finish_reason = candidate.get("finish_reason", "").lower()
 
         return CompletionResponse(
             content=content,

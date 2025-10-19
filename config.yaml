@@ -1,0 +1,80 @@
+# SCOUT MCP Server - Configuration
+# API keys are loaded from .env file
+
+# System settings
+system:
+  max_retries: 3
+  request_timeout_seconds: 60
+  cache_ttl_seconds: 3600
+  default_team: "scout"
+  log_level: "INFO"
+
+# AI Providers
+providers:
+  # Google Gemini - Fast and free!
+  gemini:
+    api_key: "${GEMINI_API_KEY}"
+    models:
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+        temperature: 0.7
+        cost_per_1k_input: 0.0
+        cost_per_1k_output: 0.0
+    default_model: "flash"
+
+  # OpenAI
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    models:
+      gpt4o:
+        id: "gpt-4o"
+        max_tokens: 4096
+        temperature: 0.7
+        cost_per_1k_input: 2.5
+        cost_per_1k_output: 10.0
+      gpt4mini:
+        id: "gpt-4o-mini"
+        max_tokens: 4096
+        temperature: 0.7
+        cost_per_1k_input: 0.15
+        cost_per_1k_output: 0.6
+    default_model: "gpt4mini"
+
+  # Anthropic Claude
+  anthropic:
+    api_key: "${ANTHROPIC_API_KEY}"
+    models:
+      sonnet:
+        id: "claude-sonnet-4"
+        max_tokens: 4096
+        temperature: 0.7
+        cost_per_1k_input: 3.0
+        cost_per_1k_output: 15.0
+    default_model: "sonnet"
+
+# Teams
+teams:
+  # Default team - uses Gemini (free & fast)
+  scout:
+    description: "General-purpose team for quick tasks"
+    primary:
+      provider: "gemini"
+      model: "flash"
+
+  # Expert team - uses Claude for complex tasks
+  expert:
+    description: "Premium team for complex analysis"
+    primary:
+      provider: "anthropic"
+      model: "sonnet"
+
+  # Balanced team - uses OpenAI mini
+  architect:
+    description: "Balanced team for moderate tasks"
+    primary:
+      provider: "openai"
+      model: "gpt4mini"
+
+# Tool to team mapping (optional - for specific tool routing)
+tool_team_mapping: {}

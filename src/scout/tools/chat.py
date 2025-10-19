@@ -41,7 +41,8 @@ from scout.core.tool_registry import (
     ToolCategory,
     ToolPermission
 )
-from scout.providers.base import Message, Role
+from scout.providers.base import Message, Role, BaseAIProvider
+from scout.core.state_manager import StateManager, SessionNotFoundError
 
 # Configure structured logging
 logger = structlog.get_logger(__name__)
@@ -198,10 +199,12 @@ class ChatTool(BaseTool):
         temperature: Optional[float] = None,
         team_override: Optional[str] = None,
         team_context: Optional[Dict[str, Any]] = None,
+        provider: Optional[BaseAIProvider] = None,
+        state_manager: Optional[StateManager] = None,
         **kwargs
     ) -> Dict[str, Any]:
         """
-        Execute chat conversation.
+        Execute chat conversation with real AI provider.
 
         Args:
             message: User message
@@ -211,6 +214,8 @@ class ChatTool(BaseTool):
             temperature: Sampling temperature
             team_override: Force specific team
             team_context: Team context injected by server
+            provider: AI provider instance (injected by server)
+            state_manager: State manager for conversation history
             **kwargs: Additional parameters
 
         Returns:
@@ -219,7 +224,8 @@ class ChatTool(BaseTool):
         log = logger.bind(
             tool="chat",
             session_id=session_id,
-            has_system_prompt=system_prompt is not None
+            has_system_prompt=system_prompt is not None,
+            has_provider=provider is not None
         )
 
         try:
@@ -258,59 +264,149 @@ class ChatTool(BaseTool):
                     content=system_prompt
                 ))
 
-            # TODO: Load conversation history from state manager
-            # For now, we only support single-turn conversations
-            # Future: Retrieve previous messages from Redis using session_id
+            # Load conversation history from state manager if available
+            if state_manager and session_id:
+                try:
+                    session_data = await state_manager.load_session(session_id)
+                    history_messages = session_data["messages"]
+
+                    # Add historical messages (skip system prompt if we added one)
+                    for hist_msg in history_messages:
+                        if not system_prompt or hist_msg.role != Role.SYSTEM:
+                            messages.append(hist_msg)
+
+                    log.debug(
+                        "Loaded conversation history",
+                        history_length=len(history_messages)
+                    )
+                except SessionNotFoundError:
+                    log.debug("No existing session found, starting new conversation")
+                except Exception as e:
+                    log.warning(
+                        "Failed to load session history",
+                        error=str(e)
+                    )
 
             # Add user message
-            messages.append(Message(
+            user_message = Message(
                 role=Role.USER,
                 content=message
-            ))
-
-            # In a real implementation, we would call the AI provider here
-            # For now, return a placeholder response
-            # This will be implemented once providers are fully integrated
-
-            # Placeholder response
-            response_text = (
-                f"This is a placeholder response from the {team_used} team "
-                f"using {provider_used}/{model_used}. "
-                f"Full AI integration will be implemented in the next phase. "
-                f"\n\nYour message: {message[:100]}..."
             )
+            messages.append(user_message)
 
-            # Calculate metadata
-            # In real implementation, this comes from the provider
-            input_tokens = len(message.split()) * 2  # Rough estimate
-            output_tokens = len(response_text.split()) * 2
-            total_tokens = input_tokens + output_tokens
+            # Call real AI provider if available
+            if provider:
+                log.debug("Calling AI provider", provider=provider.provider_type)
 
-            # Rough cost estimation (actual costs from provider config)
-            cost_per_1k_input = 0.001  # Placeholder
-            cost_per_1k_output = 0.002  # Placeholder
-            estimated_cost = (
-                (input_tokens / 1000) * cost_per_1k_input +
-                (output_tokens / 1000) * cost_per_1k_output
-            )
+                # Prepare provider parameters
+                provider_params = {}
+                if max_tokens:
+                    provider_params["max_tokens"] = max_tokens
+                if temperature is not None:
+                    provider_params["temperature"] = temperature
 
-            metadata = {
-                "input_tokens": input_tokens,
-                "output_tokens": output_tokens,
-                "total_tokens": total_tokens,
-                "cost_usd": round(estimated_cost, 6),
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-                "cached": False,
-                "latency_ms": 1500  # Placeholder
-            }
+                # Call provider
+                response = await provider.chat(
+                    messages=messages,
+                    model=model_used,
+                    **provider_params
+                )
 
-            # TODO: Save conversation to state manager
-            # Future: Store messages and response in Redis
+                response_text = response.content
+                input_tokens = response.usage.get("prompt_tokens", 0)
+                output_tokens = response.usage.get("completion_tokens", 0)
+                total_tokens = response.total_tokens
+
+                # Calculate actual cost using the model config
+                model_config = provider.config.models.get(model_used)
+                if model_config:
+                    cost_usd = (
+                        (input_tokens / 1000) * model_config.cost_per_1k_input +
+                        (output_tokens / 1000) * model_config.cost_per_1k_output
+                    )
+                else:
+                    cost_usd = 0.0
+
+                metadata = {
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "total_tokens": total_tokens,
+                    "cost_usd": round(cost_usd, 6),
+                    "temperature": temperature or (model_config.temperature if model_config else 0.7),
+                    "max_tokens": max_tokens,
+                    "cached": False,
+                    "latency_ms": response.metadata.get("latency_ms", 0)
+                }
+
+                # Add assistant response to messages
+                assistant_message = Message(
+                    role=Role.ASSISTANT,
+                    content=response_text
+                )
+                messages.append(assistant_message)
+
+                log.info(
+                    "AI provider response received",
+                    tokens=total_tokens,
+                    cost_usd=metadata["cost_usd"]
+                )
+
+            else:
+                # Fallback: placeholder response when no provider available
+                log.warning("No provider available, using placeholder response")
+
+                response_text = (
+                    f"This is a placeholder response from the {team_used} team "
+                    f"using {provider_used}/{model_used}. "
+                    f"Provider not available for real AI integration. "
+                    f"\n\nYour message: {message[:100]}..."
+                )
+
+                # Estimate metadata
+                input_tokens = len(message.split()) * 2
+                output_tokens = len(response_text.split()) * 2
+                total_tokens = input_tokens + output_tokens
+
+                metadata = {
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "total_tokens": total_tokens,
+                    "cost_usd": 0.0,
+                    "temperature": temperature,
+                    "max_tokens": max_tokens,
+                    "cached": False,
+                    "latency_ms": 0
+                }
+
+                assistant_message = Message(
+                    role=Role.ASSISTANT,
+                    content=response_text
+                )
+                messages.append(assistant_message)
+
+            # Save conversation to state manager if available
+            if state_manager:
+                try:
+                    await state_manager.save_session(
+                        session_id=session_id,
+                        messages=messages,
+                        metadata={
+                            "team": team_used,
+                            "provider": provider_used,
+                            "model": model_used,
+                            "total_cost": metadata["cost_usd"]
+                        }
+                    )
+                    log.debug("Conversation saved to state manager")
+                except Exception as e:
+                    log.error(
+                        "Failed to save conversation",
+                        error=str(e)
+                    )
 
             log.info(
                 "Chat execution completed",
-                tokens=total_tokens,
+                tokens=metadata["total_tokens"],
                 cost_usd=metadata["cost_usd"]
             )
 

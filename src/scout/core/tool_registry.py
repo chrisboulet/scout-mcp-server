@@ -119,8 +119,13 @@ class BaseTool(ABC):
         pass
 
     @abstractmethod
-    async def execute(self, **kwargs) -> Any:
-        """Execute the tool."""
+    async def execute(self) -> Any:
+        """
+        Execute the tool.
+
+        Note: Concrete implementations should override this with explicit parameters.
+        FastMCP doesn't support **kwargs, so all parameters must be explicitly defined.
+        """
         pass
 
     def validate_input(self, data: Dict[str, Any]) -> bool:

@@ -200,8 +200,7 @@ class ChatTool(BaseTool):
         team_override: Optional[str] = None,
         team_context: Optional[Dict[str, Any]] = None,
         provider: Optional[BaseAIProvider] = None,
-        state_manager: Optional[StateManager] = None,
-        **kwargs
+        state_manager: Optional[StateManager] = None
     ) -> Dict[str, Any]:
         """
         Execute chat conversation with real AI provider.
@@ -216,7 +215,6 @@ class ChatTool(BaseTool):
             team_context: Team context injected by server
             provider: AI provider instance (injected by server)
             state_manager: State manager for conversation history
-            **kwargs: Additional parameters
 
         Returns:
             Chat response with metadata

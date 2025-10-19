@@ -192,8 +192,7 @@ class DeepAnalystTool(BaseTool):
         require_high_confidence: bool = True,
         use_cross_validation: bool = False,
         team_context: Optional[Dict[str, Any]] = None,
-        provider: Optional[BaseAIProvider] = None,
-        **kwargs
+        provider: Optional[BaseAIProvider] = None
     ) -> Dict[str, Any]:
         """
         Execute deep investigation.
@@ -206,7 +205,6 @@ class DeepAnalystTool(BaseTool):
             use_cross_validation: Validate with multiple providers
             team_context: Team context (injected by server)
             provider: AI provider instance (injected by server)
-            **kwargs: Additional parameters
 
         Returns:
             Investigation results with steps and conclusions

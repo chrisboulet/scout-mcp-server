@@ -213,11 +213,18 @@ class ScoutMCPServer:
             if not tool:
                 continue
 
-            # Create MCP tool handler
-            @self.mcp.tool(name=tool_name)
-            async def tool_handler(**kwargs) -> Dict[str, Any]:
-                """Dynamic tool handler for MCP."""
-                return await self.execute_tool(tool_name, kwargs)
+            # Register the tool's handler directly (avoid **kwargs wrapper)
+            # FastMCP will inspect the handler's signature for parameter definitions
+            # Exclude runtime parameters injected by server (not part of MCP schema)
+            import inspect
+            sig = inspect.signature(tool.handler)
+            runtime_params = {"provider", "state_manager", "available_providers", "team_context"}
+            exclude_list = [p for p in runtime_params if p in sig.parameters]
+
+            self.mcp.tool(
+                name=tool_name,
+                exclude_args=exclude_list
+            )(tool.handler)
 
             self.logger.debug(
                 "MCP handler registered",
@@ -304,6 +311,7 @@ class ScoutMCPServer:
             # These are injected by the server and not part of the tool's input schema
             input_data["provider"] = provider
             input_data["state_manager"] = self.state_manager
+            input_data["available_providers"] = self.providers  # For multi-provider tools like consensus_builder
 
             # Execute tool
             result = await self.tool_registry.execute_tool(

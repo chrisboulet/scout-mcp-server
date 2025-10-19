@@ -486,8 +486,7 @@ Keep your response concise (max 500 words)."""
         analysis_type: str = "comprehensive",
         use_ai: bool = True,
         team_context: Optional[Dict[str, Any]] = None,
-        provider: Optional[BaseAIProvider] = None,
-        **kwargs
+        provider: Optional[BaseAIProvider] = None
     ) -> Dict[str, Any]:
         """
         Execute comprehensive code analysis.
@@ -499,7 +498,6 @@ Keep your response concise (max 500 words)."""
             use_ai: Whether to use AI for deep insights
             team_context: Team context (injected by server)
             provider: AI provider (injected by server)
-            **kwargs: Additional parameters
 
         Returns:
             Comprehensive analysis results

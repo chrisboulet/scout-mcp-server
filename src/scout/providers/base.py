@@ -28,6 +28,7 @@ from dataclasses import dataclass, field
 from typing import Optional, Dict, Any, List, Union, AsyncIterator, Literal
 from enum import Enum
 import asyncio
+import logging
 from datetime import datetime
 import structlog
 from tenacity import (
@@ -333,8 +334,8 @@ class BaseAIProvider(ABC):
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10),
         retry=retry_if_exception_type(RateLimitException),
-        before_sleep=before_sleep_log(logger, structlog.INFO),
-        after=after_log(logger, structlog.INFO)
+        before_sleep=before_sleep_log(logger, logging.INFO),
+        after=after_log(logger, logging.INFO)
     )
     async def chat(
         self,
@@ -594,9 +595,39 @@ class BaseAIProvider(ABC):
         """
         return {
             "provider": self.provider_type.value,
+            "total_requests": self._request_count,
+            "successful_requests": self._request_count - self._error_count,
+            "failed_requests": self._error_count,
             "request_count": self._request_count,
             "error_count": self._error_count,
             "total_tokens": self._total_tokens,
             "error_rate": self._error_count / max(self._request_count, 1),
             "average_tokens": self._total_tokens / max(self._request_count, 1)
         }
+
+    def supports_streaming(self) -> bool:
+        """
+        Check if provider supports streaming responses.
+
+        Returns:
+            True if streaming is supported
+        """
+        return True
+
+    def supports_vision(self) -> bool:
+        """
+        Check if provider supports vision/image inputs.
+
+        Returns:
+            True if vision is supported
+        """
+        return False
+
+    def supports_functions(self) -> bool:
+        """
+        Check if provider supports function calling.
+
+        Returns:
+            True if function calling is supported
+        """
+        return False

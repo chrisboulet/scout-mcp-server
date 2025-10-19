@@ -1,0 +1,407 @@
+{
+  "$defs": {
+    "IntegrationConfig": {
+      "description": "Optional third-party integration settings.\n\nConfigures external services like Notion and Tavily that SCOUT can integrate\nwith for enhanced functionality.\n\nAttributes:\n    notion_api_key: Optional Notion API key for workspace integration\n    tavily_api_key: Optional Tavily API key for web search capabilities\n\nExample:\n    >>> integrations = IntegrationConfig(\n    ...     notion_api_key=\"secret_abc123\",\n    ...     tavily_api_key=\"tvly-xyz789\"\n    ... )\n    >>> integrations.model_dump()[\"notion_api_key\"]  # Returns: \"sec***\" (redacted)",
+      "properties": {
+        "notion_api_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Notion API key for workspace integration (optional, auto-redacted)",
+          "examples": [
+            "secret_abc123def456"
+          ],
+          "title": "Notion Api Key"
+        },
+        "tavily_api_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Tavily API key for web search integration (optional, auto-redacted)",
+          "examples": [
+            "tvly-abc123def456"
+          ],
+          "title": "Tavily Api Key"
+        }
+      },
+      "title": "IntegrationConfig",
+      "type": "object"
+    },
+    "ModelConfig": {
+      "description": "Configuration for a single AI model.\n\nDefines model parameters and cost tracking information for usage monitoring\nand budget management.\n\nAttributes:\n    id: Unique model identifier (e.g., \"gemini-2.0-flash-exp\", \"gpt-4o\")\n    max_tokens: Maximum tokens allowed in model response\n    temperature: Sampling temperature (0.0-2.0) for response randomness\n    cost_per_1k_input: USD cost per 1000 input tokens\n    cost_per_1k_output: USD cost per 1000 output tokens\n\nExample:\n    >>> model = ModelConfig(\n    ...     id=\"gemini-2.0-flash-exp\",\n    ...     max_tokens=8192,\n    ...     temperature=0.7,\n    ...     cost_per_1k_input=0.0001,\n    ...     cost_per_1k_output=0.0003\n    ... )",
+      "properties": {
+        "id": {
+          "description": "Model identifier from provider (e.g., 'gpt-4o', 'claude-3-5-sonnet-20241022')",
+          "examples": [
+            "gemini-2.0-flash-exp",
+            "gpt-4o"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "max_tokens": {
+          "description": "Maximum tokens in model response (validated 1-2M range)",
+          "examples": [
+            8192,
+            16384,
+            100000
+          ],
+          "maximum": 2000000,
+          "minimum": 1,
+          "title": "Max Tokens",
+          "type": "integer"
+        },
+        "temperature": {
+          "default": 0.7,
+          "description": "Sampling temperature (0.0=deterministic, 2.0=very random)",
+          "examples": [
+            0.0,
+            0.7,
+            1.0
+          ],
+          "maximum": 2.0,
+          "minimum": 0.0,
+          "title": "Temperature",
+          "type": "number"
+        },
+        "cost_per_1k_input": {
+          "default": 0.0,
+          "description": "USD cost per 1000 input tokens for budget tracking",
+          "examples": [
+            0.0001,
+            0.001,
+            0.01
+          ],
+          "minimum": 0.0,
+          "title": "Cost Per 1K Input",
+          "type": "number"
+        },
+        "cost_per_1k_output": {
+          "default": 0.0,
+          "description": "USD cost per 1000 output tokens for budget tracking",
+          "examples": [
+            0.0003,
+            0.003,
+            0.03
+          ],
+          "minimum": 0.0,
+          "title": "Cost Per 1K Output",
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "max_tokens"
+      ],
+      "title": "ModelConfig",
+      "type": "object"
+    },
+    "ProviderConfig": {
+      "description": "Configuration for an AI provider.\n\nStores provider-specific settings including API credentials and available models.\nAPI keys are automatically redacted in logs and serialization for security.\n\nAttributes:\n    api_key: API authentication key (redacted to first 3 + \"***\" when serialized)\n    models: Dictionary of available models keyed by model name\n\nExample:\n    >>> provider = ProviderConfig(\n    ...     api_key=\"sk-1234567890abcdef\",\n    ...     models={\n    ...         \"flash\": ModelConfig(id=\"gemini-2.0-flash-exp\", max_tokens=8192),\n    ...         \"pro\": ModelConfig(id=\"gemini-2.0-pro-exp\", max_tokens=32768)\n    ...     }\n    ... )\n    >>> provider.model_dump()[\"api_key\"]  # Returns: \"sk-***\"",
+      "properties": {
+        "api_key": {
+          "description": "API authentication key for provider (auto-redacted in logs)",
+          "examples": [
+            "sk-1234567890abcdef",
+            "AIzaSyC-1234567890"
+          ],
+          "title": "Api Key",
+          "type": "string"
+        },
+        "models": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ModelConfig"
+          },
+          "description": "Available models keyed by friendly name (e.g., 'flash', 'pro')",
+          "examples": [
+            {
+              "flash": {},
+              "pro": {}
+            }
+          ],
+          "title": "Models",
+          "type": "object"
+        }
+      },
+      "required": [
+        "api_key",
+        "models"
+      ],
+      "title": "ProviderConfig",
+      "type": "object"
+    },
+    "SystemSettings": {
+      "description": "Global system configuration parameters.\n\nDefines system-wide defaults, timeouts, and infrastructure settings that apply\nacross all teams and providers.\n\nAttributes:\n    default_team: Team name to use when no specific mapping exists\n    request_timeout_seconds: HTTP request timeout for all API calls\n    max_retries: Maximum retry attempts for failed API requests\n    cache_ttl_seconds: Time-to-live for Redis cache entries\n    redis_url: Optional Redis connection URL for caching and state\n\nExample:\n    >>> settings = SystemSettings(\n    ...     default_team=\"general\",\n    ...     request_timeout_seconds=60,\n    ...     max_retries=3,\n    ...     cache_ttl_seconds=3600,\n    ...     redis_url=\"redis://localhost:6379/0\"\n    ... )",
+      "properties": {
+        "default_team": {
+          "default": "general",
+          "description": "Default team name when tool has no specific team mapping",
+          "examples": [
+            "general",
+            "analyst",
+            "planner"
+          ],
+          "title": "Default Team",
+          "type": "string"
+        },
+        "request_timeout_seconds": {
+          "default": 60,
+          "description": "Timeout for AI provider API requests (1-300 seconds)",
+          "examples": [
+            30,
+            60,
+            120
+          ],
+          "maximum": 300,
+          "minimum": 1,
+          "title": "Request Timeout Seconds",
+          "type": "integer"
+        },
+        "max_retries": {
+          "default": 3,
+          "description": "Maximum retry attempts for failed API requests (0-10)",
+          "examples": [
+            0,
+            3,
+            5
+          ],
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "cache_ttl_seconds": {
+          "default": 3600,
+          "description": "Redis cache TTL in seconds (0=no expiration)",
+          "examples": [
+            0,
+            3600,
+            86400
+          ],
+          "minimum": 0,
+          "title": "Cache Ttl Seconds",
+          "type": "integer"
+        },
+        "redis_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Redis connection URL for caching (None=no caching)",
+          "examples": [
+            "redis://localhost:6379/0",
+            "redis://:password@localhost:6379/1"
+          ],
+          "title": "Redis Url"
+        }
+      },
+      "title": "SystemSettings",
+      "type": "object"
+    },
+    "TeamConfig": {
+      "description": "Multi-model team configuration.\n\nDefines a team of AI models working together with a primary executor and\noptional validators. Each team is optimized for specific tool categories.\n\nAttributes:\n    description: Human-readable team purpose description\n    primary: Primary model that executes the tool\n    validators: Optional list of validation models with trigger conditions\n    use_cases: Example tools or tasks this team handles\n\nExample:\n    >>> team = TeamConfig(\n    ...     description=\"Code analysis and review team\",\n    ...     primary=TeamMember(provider=\"gemini\", model=\"flash\"),\n    ...     validators=[\n    ...         ValidatorConfig(\n    ...             provider=\"anthropic\",\n    ...             model=\"claude-3-5-sonnet\",\n    ...             trigger=\"always\"\n    ...         )\n    ...     ],\n    ...     use_cases=[\"analyze_code\", \"review_pr\", \"find_bugs\"]\n    ... )",
+      "properties": {
+        "description": {
+          "description": "Human-readable description of team's purpose and capabilities",
+          "examples": [
+            "Code analysis and review team",
+            "Strategic planning and research team"
+          ],
+          "title": "Description",
+          "type": "string"
+        },
+        "primary": {
+          "$ref": "#/$defs/TeamMember",
+          "description": "Primary model that executes tool requests"
+        },
+        "validators": {
+          "description": "Optional validation models that review primary output",
+          "items": {
+            "$ref": "#/$defs/ValidatorConfig"
+          },
+          "title": "Validators",
+          "type": "array"
+        },
+        "use_cases": {
+          "description": "Example tools or task types this team is optimized for",
+          "examples": [
+            [
+              "analyze_code",
+              "review_pr"
+            ],
+            [
+              "plan_strategy",
+              "research_topic"
+            ]
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Use Cases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "description",
+        "primary"
+      ],
+      "title": "TeamConfig",
+      "type": "object"
+    },
+    "TeamMember": {
+      "description": "Single AI model assignment for a team role.\n\nRepresents one model from one provider assigned to a specific role in a team.\nUsed for both primary models and validators.\n\nAttributes:\n    provider: Name of AI provider (must match key in providers config)\n    model: Name of model from provider (must match key in provider's models)\n\nExample:\n    >>> member = TeamMember(provider=\"gemini\", model=\"flash\")",
+      "properties": {
+        "provider": {
+          "description": "AI provider name (must exist in providers config)",
+          "examples": [
+            "gemini",
+            "openai",
+            "anthropic"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "description": "Model name within provider (must exist in provider.models)",
+          "examples": [
+            "flash",
+            "gpt-4o",
+            "claude-3-5-sonnet"
+          ],
+          "title": "Model",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model"
+      ],
+      "title": "TeamMember",
+      "type": "object"
+    },
+    "ValidatorConfig": {
+      "description": "Validator model with trigger conditions.\n\nExtends TeamMember to add conditional triggering based on tool results.\nValidators perform quality checks, security reviews, or accuracy validation.\n\nAttributes:\n    provider: Inherited from TeamMember\n    model: Inherited from TeamMember\n    trigger: Condition for running validator (\"always\", \"on_error\", \"random\")\n\nExample:\n    >>> validator = ValidatorConfig(\n    ...     provider=\"anthropic\",\n    ...     model=\"claude-3-5-sonnet\",\n    ...     trigger=\"on_error\"\n    ... )",
+      "properties": {
+        "provider": {
+          "description": "AI provider name (must exist in providers config)",
+          "examples": [
+            "gemini",
+            "openai",
+            "anthropic"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "description": "Model name within provider (must exist in provider.models)",
+          "examples": [
+            "flash",
+            "gpt-4o",
+            "claude-3-5-sonnet"
+          ],
+          "title": "Model",
+          "type": "string"
+        },
+        "trigger": {
+          "default": "always",
+          "description": "When to run validator: 'always', 'on_error', or 'random'",
+          "enum": [
+            "always",
+            "on_error",
+            "random"
+          ],
+          "examples": [
+            "always",
+            "on_error",
+            "random"
+          ],
+          "title": "Trigger",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model"
+      ],
+      "title": "ValidatorConfig",
+      "type": "object"
+    }
+  },
+  "description": "Root SCOUT configuration model.\n\nTop-level configuration combining all provider settings, team definitions,\ntool mappings, system parameters, and integrations. This is the single\nvalidated configuration object used throughout the application.\n\nAttributes:\n    providers: Dictionary of AI providers keyed by provider name\n    teams: Dictionary of team configurations keyed by team name\n    tool_team_mapping: Dictionary mapping tool names to team names\n    system: Global system settings and defaults\n    integrations: Optional third-party integration configurations\n\nExample:\n    >>> config = ScoutConfig(\n    ...     providers={\n    ...         \"gemini\": ProviderConfig(\n    ...             api_key=\"sk-abc123\",\n    ...             models={\"flash\": ModelConfig(...)}\n    ...         )\n    ...     },\n    ...     teams={\n    ...         \"analyst\": TeamConfig(\n    ...             description=\"Code analysis team\",\n    ...             primary=TeamMember(provider=\"gemini\", model=\"flash\")\n    ...         )\n    ...     },\n    ...     tool_team_mapping={\"analyze_code\": \"analyst\"},\n    ...     system=SystemSettings(),\n    ...     integrations=IntegrationConfig()\n    ... )",
+  "properties": {
+    "providers": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ProviderConfig"
+      },
+      "description": "AI providers keyed by provider name (e.g., 'gemini', 'openai')",
+      "examples": [
+        {
+          "gemini": {},
+          "openai": {}
+        }
+      ],
+      "title": "Providers",
+      "type": "object"
+    },
+    "teams": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TeamConfig"
+      },
+      "description": "Team configurations keyed by team name (e.g., 'analyst', 'planner')",
+      "examples": [
+        {
+          "analyst": {},
+          "planner": {}
+        }
+      ],
+      "title": "Teams",
+      "type": "object"
+    },
+    "tool_team_mapping": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Tool-to-team mapping (tool_name -> team_name)",
+      "examples": [
+        {
+          "analyze_code": "analyst",
+          "plan_strategy": "planner"
+        }
+      ],
+      "title": "Tool Team Mapping",
+      "type": "object"
+    },
+    "system": {
+      "$ref": "#/$defs/SystemSettings",
+      "description": "Global system configuration and defaults"
+    },
+    "integrations": {
+      "$ref": "#/$defs/IntegrationConfig",
+      "description": "Optional third-party service integrations"
+    }
+  },
+  "required": [
+    "providers",
+    "teams",
+    "tool_team_mapping"
+  ],
+  "title": "ScoutConfig",
+  "type": "object"
+}

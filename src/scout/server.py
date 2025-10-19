@@ -37,6 +37,7 @@ from scout.config.models import ScoutConfig
 from scout.config.exceptions import ConfigurationError
 from scout.core.team_selector import TeamSelector
 from scout.core.tool_registry import ToolRegistry, BaseTool
+from scout.core.state_manager import StateManager
 from scout.providers.factory import ProviderFactory
 from scout.providers.base import BaseAIProvider, Message, Role
 
@@ -115,6 +116,7 @@ class ScoutMCPServer:
         self.tool_registry = ToolRegistry()
         self.team_selector = TeamSelector(scout_config=self.config)
         self.providers: Dict[str, BaseAIProvider] = {}
+        self.state_manager: Optional[StateManager] = None
 
         # Server state
         self._initialized = False
@@ -155,6 +157,22 @@ class ScoutMCPServer:
             for name, provider in self.providers.items():
                 await provider.initialize()
                 self.logger.debug("Provider initialized", provider=name)
+
+            # Initialize State Manager (optional - fails gracefully if Redis unavailable)
+            try:
+                import os
+                redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
+                self.state_manager = StateManager(
+                    redis_url=redis_url,
+                    default_ttl_seconds=self.config.system.cache_ttl_seconds
+                )
+                self.logger.info("State manager initialized", redis_url=redis_url)
+            except Exception as e:
+                self.logger.warning(
+                    "State manager initialization failed - conversations won't persist",
+                    error=str(e)
+                )
+                self.state_manager = None
 
             # Discover and register tools from tools directory
             tools_dir = Path(__file__).parent / "tools"
@@ -263,14 +281,29 @@ class ScoutMCPServer:
                 confidence=team_selection.confidence
             )
 
+            # Get provider instance for the selected team
+            provider_name = team_selection.primary_provider
+            provider = self.providers.get(provider_name)
+
+            if not provider:
+                self.logger.warning(
+                    "Provider not available, tool will run without AI integration",
+                    provider=provider_name
+                )
+
             # Add team selection context to input
-            input_data["_team_context"] = {
+            input_data["team_context"] = {
                 "team": team_selection.team_name,
                 "provider": team_selection.primary_provider,
                 "model": team_selection.primary_model,
                 "complexity": team_selection.complexity.value,
                 "domain": team_selection.domain.value
             }
+
+            # Add runtime dependencies (provider and state manager)
+            # These are injected by the server and not part of the tool's input schema
+            input_data["provider"] = provider
+            input_data["state_manager"] = self.state_manager
 
             # Execute tool
             result = await self.tool_registry.execute_tool(

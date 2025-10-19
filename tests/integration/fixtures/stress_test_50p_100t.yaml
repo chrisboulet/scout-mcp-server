@@ -1,0 +1,1261 @@
+providers:
+  provider_1:
+    api_key: sk-test-provider-1-key
+    models:
+      model_fast_1:
+        id: provider-1-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_1:
+        id: provider-1-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_2:
+    api_key: sk-test-provider-2-key
+    models:
+      model_fast_2:
+        id: provider-2-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_2:
+        id: provider-2-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_3:
+    api_key: sk-test-provider-3-key
+    models:
+      model_fast_3:
+        id: provider-3-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_3:
+        id: provider-3-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_4:
+    api_key: sk-test-provider-4-key
+    models:
+      model_fast_4:
+        id: provider-4-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_4:
+        id: provider-4-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_5:
+    api_key: sk-test-provider-5-key
+    models:
+      model_fast_5:
+        id: provider-5-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_5:
+        id: provider-5-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_6:
+    api_key: sk-test-provider-6-key
+    models:
+      model_fast_6:
+        id: provider-6-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_6:
+        id: provider-6-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_7:
+    api_key: sk-test-provider-7-key
+    models:
+      model_fast_7:
+        id: provider-7-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_7:
+        id: provider-7-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_8:
+    api_key: sk-test-provider-8-key
+    models:
+      model_fast_8:
+        id: provider-8-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_8:
+        id: provider-8-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_9:
+    api_key: sk-test-provider-9-key
+    models:
+      model_fast_9:
+        id: provider-9-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_9:
+        id: provider-9-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_10:
+    api_key: sk-test-provider-10-key
+    models:
+      model_fast_10:
+        id: provider-10-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_10:
+        id: provider-10-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_11:
+    api_key: sk-test-provider-11-key
+    models:
+      model_fast_11:
+        id: provider-11-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_11:
+        id: provider-11-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_12:
+    api_key: sk-test-provider-12-key
+    models:
+      model_fast_12:
+        id: provider-12-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_12:
+        id: provider-12-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_13:
+    api_key: sk-test-provider-13-key
+    models:
+      model_fast_13:
+        id: provider-13-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_13:
+        id: provider-13-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_14:
+    api_key: sk-test-provider-14-key
+    models:
+      model_fast_14:
+        id: provider-14-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_14:
+        id: provider-14-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_15:
+    api_key: sk-test-provider-15-key
+    models:
+      model_fast_15:
+        id: provider-15-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_15:
+        id: provider-15-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_16:
+    api_key: sk-test-provider-16-key
+    models:
+      model_fast_16:
+        id: provider-16-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_16:
+        id: provider-16-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_17:
+    api_key: sk-test-provider-17-key
+    models:
+      model_fast_17:
+        id: provider-17-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_17:
+        id: provider-17-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_18:
+    api_key: sk-test-provider-18-key
+    models:
+      model_fast_18:
+        id: provider-18-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_18:
+        id: provider-18-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_19:
+    api_key: sk-test-provider-19-key
+    models:
+      model_fast_19:
+        id: provider-19-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_19:
+        id: provider-19-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_20:
+    api_key: sk-test-provider-20-key
+    models:
+      model_fast_20:
+        id: provider-20-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_20:
+        id: provider-20-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_21:
+    api_key: sk-test-provider-21-key
+    models:
+      model_fast_21:
+        id: provider-21-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_21:
+        id: provider-21-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_22:
+    api_key: sk-test-provider-22-key
+    models:
+      model_fast_22:
+        id: provider-22-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_22:
+        id: provider-22-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_23:
+    api_key: sk-test-provider-23-key
+    models:
+      model_fast_23:
+        id: provider-23-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_23:
+        id: provider-23-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_24:
+    api_key: sk-test-provider-24-key
+    models:
+      model_fast_24:
+        id: provider-24-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_24:
+        id: provider-24-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_25:
+    api_key: sk-test-provider-25-key
+    models:
+      model_fast_25:
+        id: provider-25-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_25:
+        id: provider-25-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_26:
+    api_key: sk-test-provider-26-key
+    models:
+      model_fast_26:
+        id: provider-26-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_26:
+        id: provider-26-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_27:
+    api_key: sk-test-provider-27-key
+    models:
+      model_fast_27:
+        id: provider-27-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_27:
+        id: provider-27-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_28:
+    api_key: sk-test-provider-28-key
+    models:
+      model_fast_28:
+        id: provider-28-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_28:
+        id: provider-28-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_29:
+    api_key: sk-test-provider-29-key
+    models:
+      model_fast_29:
+        id: provider-29-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_29:
+        id: provider-29-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_30:
+    api_key: sk-test-provider-30-key
+    models:
+      model_fast_30:
+        id: provider-30-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_30:
+        id: provider-30-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_31:
+    api_key: sk-test-provider-31-key
+    models:
+      model_fast_31:
+        id: provider-31-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_31:
+        id: provider-31-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_32:
+    api_key: sk-test-provider-32-key
+    models:
+      model_fast_32:
+        id: provider-32-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_32:
+        id: provider-32-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_33:
+    api_key: sk-test-provider-33-key
+    models:
+      model_fast_33:
+        id: provider-33-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_33:
+        id: provider-33-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_34:
+    api_key: sk-test-provider-34-key
+    models:
+      model_fast_34:
+        id: provider-34-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_34:
+        id: provider-34-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_35:
+    api_key: sk-test-provider-35-key
+    models:
+      model_fast_35:
+        id: provider-35-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_35:
+        id: provider-35-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_36:
+    api_key: sk-test-provider-36-key
+    models:
+      model_fast_36:
+        id: provider-36-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_36:
+        id: provider-36-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_37:
+    api_key: sk-test-provider-37-key
+    models:
+      model_fast_37:
+        id: provider-37-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_37:
+        id: provider-37-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_38:
+    api_key: sk-test-provider-38-key
+    models:
+      model_fast_38:
+        id: provider-38-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_38:
+        id: provider-38-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_39:
+    api_key: sk-test-provider-39-key
+    models:
+      model_fast_39:
+        id: provider-39-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_39:
+        id: provider-39-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_40:
+    api_key: sk-test-provider-40-key
+    models:
+      model_fast_40:
+        id: provider-40-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_40:
+        id: provider-40-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_41:
+    api_key: sk-test-provider-41-key
+    models:
+      model_fast_41:
+        id: provider-41-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_41:
+        id: provider-41-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_42:
+    api_key: sk-test-provider-42-key
+    models:
+      model_fast_42:
+        id: provider-42-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_42:
+        id: provider-42-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_43:
+    api_key: sk-test-provider-43-key
+    models:
+      model_fast_43:
+        id: provider-43-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_43:
+        id: provider-43-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_44:
+    api_key: sk-test-provider-44-key
+    models:
+      model_fast_44:
+        id: provider-44-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_44:
+        id: provider-44-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_45:
+    api_key: sk-test-provider-45-key
+    models:
+      model_fast_45:
+        id: provider-45-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_45:
+        id: provider-45-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_46:
+    api_key: sk-test-provider-46-key
+    models:
+      model_fast_46:
+        id: provider-46-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_46:
+        id: provider-46-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_47:
+    api_key: sk-test-provider-47-key
+    models:
+      model_fast_47:
+        id: provider-47-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_47:
+        id: provider-47-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_48:
+    api_key: sk-test-provider-48-key
+    models:
+      model_fast_48:
+        id: provider-48-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_48:
+        id: provider-48-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_49:
+    api_key: sk-test-provider-49-key
+    models:
+      model_fast_49:
+        id: provider-49-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_49:
+        id: provider-49-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_50:
+    api_key: sk-test-provider-50-key
+    models:
+      model_fast_50:
+        id: provider-50-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_50:
+        id: provider-50-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+teams:
+  team_1:
+    description: Team 1 for various tasks
+    primary:
+      provider: provider_1
+      model: model_fast_1
+    validators: []
+  team_2:
+    description: Team 2 for various tasks
+    primary:
+      provider: provider_2
+      model: model_fast_2
+    validators: []
+  team_3:
+    description: Team 3 for various tasks
+    primary:
+      provider: provider_3
+      model: model_fast_3
+    validators: []
+  team_4:
+    description: Team 4 for various tasks
+    primary:
+      provider: provider_4
+      model: model_fast_4
+    validators: []
+  team_5:
+    description: Team 5 for various tasks
+    primary:
+      provider: provider_5
+      model: model_fast_5
+    validators: []
+  team_6:
+    description: Team 6 for various tasks
+    primary:
+      provider: provider_6
+      model: model_fast_6
+    validators: []
+  team_7:
+    description: Team 7 for various tasks
+    primary:
+      provider: provider_7
+      model: model_fast_7
+    validators: []
+  team_8:
+    description: Team 8 for various tasks
+    primary:
+      provider: provider_8
+      model: model_fast_8
+    validators: []
+  team_9:
+    description: Team 9 for various tasks
+    primary:
+      provider: provider_9
+      model: model_fast_9
+    validators: []
+  team_10:
+    description: Team 10 for various tasks
+    primary:
+      provider: provider_10
+      model: model_fast_10
+    validators: []
+  team_11:
+    description: Team 11 for various tasks
+    primary:
+      provider: provider_11
+      model: model_fast_11
+    validators: []
+  team_12:
+    description: Team 12 for various tasks
+    primary:
+      provider: provider_12
+      model: model_fast_12
+    validators: []
+  team_13:
+    description: Team 13 for various tasks
+    primary:
+      provider: provider_13
+      model: model_fast_13
+    validators: []
+  team_14:
+    description: Team 14 for various tasks
+    primary:
+      provider: provider_14
+      model: model_fast_14
+    validators: []
+  team_15:
+    description: Team 15 for various tasks
+    primary:
+      provider: provider_15
+      model: model_fast_15
+    validators: []
+  team_16:
+    description: Team 16 for various tasks
+    primary:
+      provider: provider_16
+      model: model_fast_16
+    validators: []
+  team_17:
+    description: Team 17 for various tasks
+    primary:
+      provider: provider_17
+      model: model_fast_17
+    validators: []
+  team_18:
+    description: Team 18 for various tasks
+    primary:
+      provider: provider_18
+      model: model_fast_18
+    validators: []
+  team_19:
+    description: Team 19 for various tasks
+    primary:
+      provider: provider_19
+      model: model_fast_19
+    validators: []
+  team_20:
+    description: Team 20 for various tasks
+    primary:
+      provider: provider_20
+      model: model_fast_20
+    validators: []
+  team_21:
+    description: Team 21 for various tasks
+    primary:
+      provider: provider_21
+      model: model_fast_21
+    validators: []
+  team_22:
+    description: Team 22 for various tasks
+    primary:
+      provider: provider_22
+      model: model_fast_22
+    validators: []
+  team_23:
+    description: Team 23 for various tasks
+    primary:
+      provider: provider_23
+      model: model_fast_23
+    validators: []
+  team_24:
+    description: Team 24 for various tasks
+    primary:
+      provider: provider_24
+      model: model_fast_24
+    validators: []
+  team_25:
+    description: Team 25 for various tasks
+    primary:
+      provider: provider_25
+      model: model_fast_25
+    validators: []
+  team_26:
+    description: Team 26 for various tasks
+    primary:
+      provider: provider_26
+      model: model_fast_26
+    validators: []
+  team_27:
+    description: Team 27 for various tasks
+    primary:
+      provider: provider_27
+      model: model_fast_27
+    validators: []
+  team_28:
+    description: Team 28 for various tasks
+    primary:
+      provider: provider_28
+      model: model_fast_28
+    validators: []
+  team_29:
+    description: Team 29 for various tasks
+    primary:
+      provider: provider_29
+      model: model_fast_29
+    validators: []
+  team_30:
+    description: Team 30 for various tasks
+    primary:
+      provider: provider_30
+      model: model_fast_30
+    validators: []
+  team_31:
+    description: Team 31 for various tasks
+    primary:
+      provider: provider_31
+      model: model_fast_31
+    validators: []
+  team_32:
+    description: Team 32 for various tasks
+    primary:
+      provider: provider_32
+      model: model_fast_32
+    validators: []
+  team_33:
+    description: Team 33 for various tasks
+    primary:
+      provider: provider_33
+      model: model_fast_33
+    validators: []
+  team_34:
+    description: Team 34 for various tasks
+    primary:
+      provider: provider_34
+      model: model_fast_34
+    validators: []
+  team_35:
+    description: Team 35 for various tasks
+    primary:
+      provider: provider_35
+      model: model_fast_35
+    validators: []
+  team_36:
+    description: Team 36 for various tasks
+    primary:
+      provider: provider_36
+      model: model_fast_36
+    validators: []
+  team_37:
+    description: Team 37 for various tasks
+    primary:
+      provider: provider_37
+      model: model_fast_37
+    validators: []
+  team_38:
+    description: Team 38 for various tasks
+    primary:
+      provider: provider_38
+      model: model_fast_38
+    validators: []
+  team_39:
+    description: Team 39 for various tasks
+    primary:
+      provider: provider_39
+      model: model_fast_39
+    validators: []
+  team_40:
+    description: Team 40 for various tasks
+    primary:
+      provider: provider_40
+      model: model_fast_40
+    validators: []
+  team_41:
+    description: Team 41 for various tasks
+    primary:
+      provider: provider_41
+      model: model_fast_41
+    validators: []
+  team_42:
+    description: Team 42 for various tasks
+    primary:
+      provider: provider_42
+      model: model_fast_42
+    validators: []
+  team_43:
+    description: Team 43 for various tasks
+    primary:
+      provider: provider_43
+      model: model_fast_43
+    validators: []
+  team_44:
+    description: Team 44 for various tasks
+    primary:
+      provider: provider_44
+      model: model_fast_44
+    validators: []
+  team_45:
+    description: Team 45 for various tasks
+    primary:
+      provider: provider_45
+      model: model_fast_45
+    validators: []
+  team_46:
+    description: Team 46 for various tasks
+    primary:
+      provider: provider_46
+      model: model_fast_46
+    validators: []
+  team_47:
+    description: Team 47 for various tasks
+    primary:
+      provider: provider_47
+      model: model_fast_47
+    validators: []
+  team_48:
+    description: Team 48 for various tasks
+    primary:
+      provider: provider_48
+      model: model_fast_48
+    validators: []
+  team_49:
+    description: Team 49 for various tasks
+    primary:
+      provider: provider_49
+      model: model_fast_49
+    validators: []
+  team_50:
+    description: Team 50 for various tasks
+    primary:
+      provider: provider_50
+      model: model_fast_50
+    validators: []
+  team_51:
+    description: Team 51 for various tasks
+    primary:
+      provider: provider_1
+      model: model_fast_1
+    validators: []
+  team_52:
+    description: Team 52 for various tasks
+    primary:
+      provider: provider_2
+      model: model_fast_2
+    validators: []
+  team_53:
+    description: Team 53 for various tasks
+    primary:
+      provider: provider_3
+      model: model_fast_3
+    validators: []
+  team_54:
+    description: Team 54 for various tasks
+    primary:
+      provider: provider_4
+      model: model_fast_4
+    validators: []
+  team_55:
+    description: Team 55 for various tasks
+    primary:
+      provider: provider_5
+      model: model_fast_5
+    validators: []
+  team_56:
+    description: Team 56 for various tasks
+    primary:
+      provider: provider_6
+      model: model_fast_6
+    validators: []
+  team_57:
+    description: Team 57 for various tasks
+    primary:
+      provider: provider_7
+      model: model_fast_7
+    validators: []
+  team_58:
+    description: Team 58 for various tasks
+    primary:
+      provider: provider_8
+      model: model_fast_8
+    validators: []
+  team_59:
+    description: Team 59 for various tasks
+    primary:
+      provider: provider_9
+      model: model_fast_9
+    validators: []
+  team_60:
+    description: Team 60 for various tasks
+    primary:
+      provider: provider_10
+      model: model_fast_10
+    validators: []
+  team_61:
+    description: Team 61 for various tasks
+    primary:
+      provider: provider_11
+      model: model_fast_11
+    validators: []
+  team_62:
+    description: Team 62 for various tasks
+    primary:
+      provider: provider_12
+      model: model_fast_12
+    validators: []
+  team_63:
+    description: Team 63 for various tasks
+    primary:
+      provider: provider_13
+      model: model_fast_13
+    validators: []
+  team_64:
+    description: Team 64 for various tasks
+    primary:
+      provider: provider_14
+      model: model_fast_14
+    validators: []
+  team_65:
+    description: Team 65 for various tasks
+    primary:
+      provider: provider_15
+      model: model_fast_15
+    validators: []
+  team_66:
+    description: Team 66 for various tasks
+    primary:
+      provider: provider_16
+      model: model_fast_16
+    validators: []
+  team_67:
+    description: Team 67 for various tasks
+    primary:
+      provider: provider_17
+      model: model_fast_17
+    validators: []
+  team_68:
+    description: Team 68 for various tasks
+    primary:
+      provider: provider_18
+      model: model_fast_18
+    validators: []
+  team_69:
+    description: Team 69 for various tasks
+    primary:
+      provider: provider_19
+      model: model_fast_19
+    validators: []
+  team_70:
+    description: Team 70 for various tasks
+    primary:
+      provider: provider_20
+      model: model_fast_20
+    validators: []
+  team_71:
+    description: Team 71 for various tasks
+    primary:
+      provider: provider_21
+      model: model_fast_21
+    validators: []
+  team_72:
+    description: Team 72 for various tasks
+    primary:
+      provider: provider_22
+      model: model_fast_22
+    validators: []
+  team_73:
+    description: Team 73 for various tasks
+    primary:
+      provider: provider_23
+      model: model_fast_23
+    validators: []
+  team_74:
+    description: Team 74 for various tasks
+    primary:
+      provider: provider_24
+      model: model_fast_24
+    validators: []
+  team_75:
+    description: Team 75 for various tasks
+    primary:
+      provider: provider_25
+      model: model_fast_25
+    validators: []
+  team_76:
+    description: Team 76 for various tasks
+    primary:
+      provider: provider_26
+      model: model_fast_26
+    validators: []
+  team_77:
+    description: Team 77 for various tasks
+    primary:
+      provider: provider_27
+      model: model_fast_27
+    validators: []
+  team_78:
+    description: Team 78 for various tasks
+    primary:
+      provider: provider_28
+      model: model_fast_28
+    validators: []
+  team_79:
+    description: Team 79 for various tasks
+    primary:
+      provider: provider_29
+      model: model_fast_29
+    validators: []
+  team_80:
+    description: Team 80 for various tasks
+    primary:
+      provider: provider_30
+      model: model_fast_30
+    validators: []
+  team_81:
+    description: Team 81 for various tasks
+    primary:
+      provider: provider_31
+      model: model_fast_31
+    validators: []
+  team_82:
+    description: Team 82 for various tasks
+    primary:
+      provider: provider_32
+      model: model_fast_32
+    validators: []
+  team_83:
+    description: Team 83 for various tasks
+    primary:
+      provider: provider_33
+      model: model_fast_33
+    validators: []
+  team_84:
+    description: Team 84 for various tasks
+    primary:
+      provider: provider_34
+      model: model_fast_34
+    validators: []
+  team_85:
+    description: Team 85 for various tasks
+    primary:
+      provider: provider_35
+      model: model_fast_35
+    validators: []
+  team_86:
+    description: Team 86 for various tasks
+    primary:
+      provider: provider_36
+      model: model_fast_36
+    validators: []
+  team_87:
+    description: Team 87 for various tasks
+    primary:
+      provider: provider_37
+      model: model_fast_37
+    validators: []
+  team_88:
+    description: Team 88 for various tasks
+    primary:
+      provider: provider_38
+      model: model_fast_38
+    validators: []
+  team_89:
+    description: Team 89 for various tasks
+    primary:
+      provider: provider_39
+      model: model_fast_39
+    validators: []
+  team_90:
+    description: Team 90 for various tasks
+    primary:
+      provider: provider_40
+      model: model_fast_40
+    validators: []
+  team_91:
+    description: Team 91 for various tasks
+    primary:
+      provider: provider_41
+      model: model_fast_41
+    validators: []
+  team_92:
+    description: Team 92 for various tasks
+    primary:
+      provider: provider_42
+      model: model_fast_42
+    validators: []
+  team_93:
+    description: Team 93 for various tasks
+    primary:
+      provider: provider_43
+      model: model_fast_43
+    validators: []
+  team_94:
+    description: Team 94 for various tasks
+    primary:
+      provider: provider_44
+      model: model_fast_44
+    validators: []
+  team_95:
+    description: Team 95 for various tasks
+    primary:
+      provider: provider_45
+      model: model_fast_45
+    validators: []
+  team_96:
+    description: Team 96 for various tasks
+    primary:
+      provider: provider_46
+      model: model_fast_46
+    validators: []
+  team_97:
+    description: Team 97 for various tasks
+    primary:
+      provider: provider_47
+      model: model_fast_47
+    validators: []
+  team_98:
+    description: Team 98 for various tasks
+    primary:
+      provider: provider_48
+      model: model_fast_48
+    validators: []
+  team_99:
+    description: Team 99 for various tasks
+    primary:
+      provider: provider_49
+      model: model_fast_49
+    validators: []
+  team_100:
+    description: Team 100 for various tasks
+    primary:
+      provider: provider_50
+      model: model_fast_50
+    validators: []
+tool_team_mapping:
+  tool_1: team_1
+  tool_2: team_2
+  tool_3: team_3
+  tool_4: team_4
+  tool_5: team_5
+  tool_6: team_6
+  tool_7: team_7
+  tool_8: team_8
+  tool_9: team_9
+  tool_10: team_10
+  tool_11: team_11
+  tool_12: team_12
+  tool_13: team_13
+  tool_14: team_14
+  tool_15: team_15
+  tool_16: team_16
+  tool_17: team_17
+  tool_18: team_18
+  tool_19: team_19
+  tool_20: team_20
+  tool_21: team_21
+  tool_22: team_22
+  tool_23: team_23
+  tool_24: team_24
+  tool_25: team_25
+  tool_26: team_26
+  tool_27: team_27
+  tool_28: team_28
+  tool_29: team_29
+  tool_30: team_30
+  tool_31: team_31
+  tool_32: team_32
+  tool_33: team_33
+  tool_34: team_34
+  tool_35: team_35
+  tool_36: team_36
+  tool_37: team_37
+  tool_38: team_38
+  tool_39: team_39
+  tool_40: team_40
+  tool_41: team_41
+  tool_42: team_42
+  tool_43: team_43
+  tool_44: team_44
+  tool_45: team_45
+  tool_46: team_46
+  tool_47: team_47
+  tool_48: team_48
+  tool_49: team_49
+  tool_50: team_50
+  tool_51: team_51
+  tool_52: team_52
+  tool_53: team_53
+  tool_54: team_54
+  tool_55: team_55
+  tool_56: team_56
+  tool_57: team_57
+  tool_58: team_58
+  tool_59: team_59
+  tool_60: team_60
+  tool_61: team_61
+  tool_62: team_62
+  tool_63: team_63
+  tool_64: team_64
+  tool_65: team_65
+  tool_66: team_66
+  tool_67: team_67
+  tool_68: team_68
+  tool_69: team_69
+  tool_70: team_70
+  tool_71: team_71
+  tool_72: team_72
+  tool_73: team_73
+  tool_74: team_74
+  tool_75: team_75
+  tool_76: team_76
+  tool_77: team_77
+  tool_78: team_78
+  tool_79: team_79
+  tool_80: team_80
+  tool_81: team_81
+  tool_82: team_82
+  tool_83: team_83
+  tool_84: team_84
+  tool_85: team_85
+  tool_86: team_86
+  tool_87: team_87
+  tool_88: team_88
+  tool_89: team_89
+  tool_90: team_90
+  tool_91: team_91
+  tool_92: team_92
+  tool_93: team_93
+  tool_94: team_94
+  tool_95: team_95
+  tool_96: team_96
+  tool_97: team_97
+  tool_98: team_98
+  tool_99: team_99
+  tool_100: team_100
+system:
+  default_team: team_1
+  request_timeout_seconds: 90
+  max_retries: 3
+  cache_ttl_seconds: 7200
+integrations:
+  notion_api_key: null
+  tavily_api_key: null

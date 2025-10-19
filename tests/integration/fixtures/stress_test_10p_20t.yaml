@@ -1,0 +1,261 @@
+providers:
+  provider_1:
+    api_key: sk-test-provider-1-key
+    models:
+      model_fast_1:
+        id: provider-1-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_1:
+        id: provider-1-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_2:
+    api_key: sk-test-provider-2-key
+    models:
+      model_fast_2:
+        id: provider-2-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_2:
+        id: provider-2-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_3:
+    api_key: sk-test-provider-3-key
+    models:
+      model_fast_3:
+        id: provider-3-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_3:
+        id: provider-3-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_4:
+    api_key: sk-test-provider-4-key
+    models:
+      model_fast_4:
+        id: provider-4-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_4:
+        id: provider-4-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_5:
+    api_key: sk-test-provider-5-key
+    models:
+      model_fast_5:
+        id: provider-5-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_5:
+        id: provider-5-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_6:
+    api_key: sk-test-provider-6-key
+    models:
+      model_fast_6:
+        id: provider-6-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_6:
+        id: provider-6-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_7:
+    api_key: sk-test-provider-7-key
+    models:
+      model_fast_7:
+        id: provider-7-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_7:
+        id: provider-7-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_8:
+    api_key: sk-test-provider-8-key
+    models:
+      model_fast_8:
+        id: provider-8-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_8:
+        id: provider-8-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_9:
+    api_key: sk-test-provider-9-key
+    models:
+      model_fast_9:
+        id: provider-9-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_9:
+        id: provider-9-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+  provider_10:
+    api_key: sk-test-provider-10-key
+    models:
+      model_fast_10:
+        id: provider-10-fast-v1
+        max_tokens: 8192
+        temperature: 0.7
+      model_pro_10:
+        id: provider-10-pro-v1
+        max_tokens: 32768
+        temperature: 0.5
+teams:
+  team_1:
+    description: Team 1 for various tasks
+    primary:
+      provider: provider_1
+      model: model_fast_1
+    validators: []
+  team_2:
+    description: Team 2 for various tasks
+    primary:
+      provider: provider_2
+      model: model_fast_2
+    validators: []
+  team_3:
+    description: Team 3 for various tasks
+    primary:
+      provider: provider_3
+      model: model_fast_3
+    validators: []
+  team_4:
+    description: Team 4 for various tasks
+    primary:
+      provider: provider_4
+      model: model_fast_4
+    validators: []
+  team_5:
+    description: Team 5 for various tasks
+    primary:
+      provider: provider_5
+      model: model_fast_5
+    validators: []
+  team_6:
+    description: Team 6 for various tasks
+    primary:
+      provider: provider_6
+      model: model_fast_6
+    validators: []
+  team_7:
+    description: Team 7 for various tasks
+    primary:
+      provider: provider_7
+      model: model_fast_7
+    validators: []
+  team_8:
+    description: Team 8 for various tasks
+    primary:
+      provider: provider_8
+      model: model_fast_8
+    validators: []
+  team_9:
+    description: Team 9 for various tasks
+    primary:
+      provider: provider_9
+      model: model_fast_9
+    validators: []
+  team_10:
+    description: Team 10 for various tasks
+    primary:
+      provider: provider_10
+      model: model_fast_10
+    validators: []
+  team_11:
+    description: Team 11 for various tasks
+    primary:
+      provider: provider_1
+      model: model_fast_1
+    validators: []
+  team_12:
+    description: Team 12 for various tasks
+    primary:
+      provider: provider_2
+      model: model_fast_2
+    validators: []
+  team_13:
+    description: Team 13 for various tasks
+    primary:
+      provider: provider_3
+      model: model_fast_3
+    validators: []
+  team_14:
+    description: Team 14 for various tasks
+    primary:
+      provider: provider_4
+      model: model_fast_4
+    validators: []
+  team_15:
+    description: Team 15 for various tasks
+    primary:
+      provider: provider_5
+      model: model_fast_5
+    validators: []
+  team_16:
+    description: Team 16 for various tasks
+    primary:
+      provider: provider_6
+      model: model_fast_6
+    validators: []
+  team_17:
+    description: Team 17 for various tasks
+    primary:
+      provider: provider_7
+      model: model_fast_7
+    validators: []
+  team_18:
+    description: Team 18 for various tasks
+    primary:
+      provider: provider_8
+      model: model_fast_8
+    validators: []
+  team_19:
+    description: Team 19 for various tasks
+    primary:
+      provider: provider_9
+      model: model_fast_9
+    validators: []
+  team_20:
+    description: Team 20 for various tasks
+    primary:
+      provider: provider_10
+      model: model_fast_10
+    validators: []
+tool_team_mapping:
+  tool_1: team_1
+  tool_2: team_2
+  tool_3: team_3
+  tool_4: team_4
+  tool_5: team_5
+  tool_6: team_6
+  tool_7: team_7
+  tool_8: team_8
+  tool_9: team_9
+  tool_10: team_10
+  tool_11: team_11
+  tool_12: team_12
+  tool_13: team_13
+  tool_14: team_14
+  tool_15: team_15
+  tool_16: team_16
+  tool_17: team_17
+  tool_18: team_18
+  tool_19: team_19
+  tool_20: team_20
+system:
+  default_team: team_1
+  request_timeout_seconds: 90
+  max_retries: 3
+  cache_ttl_seconds: 7200
+integrations:
+  notion_api_key: null
+  tavily_api_key: null

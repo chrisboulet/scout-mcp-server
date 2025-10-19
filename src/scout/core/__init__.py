@@ -12,4 +12,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Core orchestration, team selection, and state management."""
+"""
+SCOUT Core Package.
+
+This package contains the core orchestration components:
+- Team Selector: Intelligent AI model selection based on task requirements
+- Tool Registry: Dynamic tool registration and discovery for MCP protocol
+"""
+
+from scout.core.team_selector import (
+    TeamSelector,
+    TeamOrchestrator,
+    TeamSelection,
+    ValidationResult,
+    TaskComplexity,
+    TaskDomain,
+)
+
+from scout.core.tool_registry import (
+    ToolRegistry,
+    BaseTool,
+    ToolMetadata,
+    ToolSchema,
+    RegisteredTool,
+    ToolCategory,
+    ToolPermission,
+    get_registry,
+    register_tool,
+)
+
+__all__ = [
+    # Team Selector
+    "TeamSelector",
+    "TeamOrchestrator",
+    "TeamSelection",
+    "ValidationResult",
+    "TaskComplexity",
+    "TaskDomain",
+    # Tool Registry
+    "ToolRegistry",
+    "BaseTool",
+    "ToolMetadata",
+    "ToolSchema",
+    "RegisteredTool",
+    "ToolCategory",
+    "ToolPermission",
+    "get_registry",
+    "register_tool",
+]

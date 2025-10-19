@@ -1,0 +1,131 @@
+# SCOUT MCP Server - Example Configuration
+#
+# This file demonstrates how to configure the SCOUT MCP server.
+# Copy this to config.yaml and customize for your environment.
+#
+# Copyright 2025 Christian Boulet / Boulet Stratégies TI
+# Licensed under Apache-2.0
+
+# System-wide settings
+system:
+  max_retries: 3
+  request_timeout_seconds: 60
+  default_team: "scout"  # Default team for simple tasks
+  log_level: "INFO"
+
+# AI Provider configurations
+providers:
+  # Google Gemini - Fast and cost-effective
+  gemini:
+    api_key: "${GEMINI_API_KEY}"  # Use environment variable
+    models:
+      flash:
+        id: "gemini-1.5-flash"
+        max_tokens: 8192
+        temperature: 0.7
+        cost_per_1k_input: 0.075
+        cost_per_1k_output: 0.3
+      pro:
+        id: "gemini-1.5-pro"
+        max_tokens: 8192
+        temperature: 0.7
+        cost_per_1k_input: 1.25
+        cost_per_1k_output: 5.0
+    default_model: "flash"
+
+  # OpenAI - Powerful for complex tasks
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    models:
+      gpt4o:
+        id: "gpt-4o"
+        max_tokens: 4096
+        temperature: 0.7
+        cost_per_1k_input: 2.5
+        cost_per_1k_output: 10.0
+      gpt4mini:
+        id: "gpt-4o-mini"
+        max_tokens: 4096
+        temperature: 0.7
+        cost_per_1k_input: 0.15
+        cost_per_1k_output: 0.6
+    default_model: "gpt4o"
+
+  # Anthropic Claude - Best for reasoning and analysis
+  anthropic:
+    api_key: "${ANTHROPIC_API_KEY}"
+    models:
+      sonnet:
+        id: "claude-sonnet-4"
+        max_tokens: 4096
+        temperature: 0.7
+        cost_per_1k_input: 3.0
+        cost_per_1k_output: 15.0
+      haiku:
+        id: "claude-3-5-haiku"
+        max_tokens: 4096
+        temperature: 0.7
+        cost_per_1k_input: 0.8
+        cost_per_1k_output: 4.0
+    default_model: "sonnet"
+
+# Team configurations - Define specialized teams for different task types
+teams:
+  # Scout team - For simple, general-purpose tasks
+  scout:
+    description: "Fast general-purpose team for simple queries and tasks"
+    primary:
+      provider: "gemini"
+      model: "flash"
+    # No validators for simple tasks
+
+  # Architect team - For moderate complexity technical tasks
+  architect:
+    description: "Balanced team for moderate technical tasks"
+    primary:
+      provider: "openai"
+      model: "gpt4mini"
+    validators:
+      - provider: "gemini"
+        model: "pro"
+        trigger: "on_error"  # Validate only on errors
+
+  # Expert team - For critical and strategic tasks
+  expert:
+    description: "Premium team for critical analysis and strategic decisions"
+    primary:
+      provider: "anthropic"
+      model: "sonnet"
+    validators:
+      - provider: "openai"
+        model: "gpt4o"
+        trigger: "always"  # Always validate critical tasks
+
+  # Specialist teams for specific domains
+  security:
+    description: "Security-focused analysis team"
+    primary:
+      provider: "anthropic"
+      model: "sonnet"
+    validators:
+      - provider: "openai"
+        model: "gpt4o"
+        trigger: "always"
+
+  performance:
+    description: "Performance optimization team"
+    primary:
+      provider: "openai"
+      model: "gpt4o"
+    validators:
+      - provider: "anthropic"
+        model: "sonnet"
+        trigger: "on_error"
+
+# Tool to team mapping - Route specific tools to appropriate teams
+tool_team_mapping:
+  code_analyzer: "architect"
+  security_audit: "security"
+  performance_analysis: "performance"
+  code_generator: "expert"
+  code_reviewer: "expert"

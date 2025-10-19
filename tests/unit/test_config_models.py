@@ -319,6 +319,26 @@ class TestIntegrationConfig:
         with pytest.raises(ValidationError):
             integrations.notion_api_key = "new_key"
 
+    def test_integrationconfig_api_key_redaction(self):
+        """IntegrationConfig should redact API keys when serialized."""
+        integrations = IntegrationConfig(
+            notion_api_key="secret_abc123def456", tavily_api_key="tvly-xyz789abc"
+        )
+        serialized = integrations.model_dump()
+
+        # Verify redaction
+        assert serialized["notion_api_key"] == "sec***"
+        assert serialized["tavily_api_key"] == "tvl***"
+
+    def test_integrationconfig_none_keys_not_redacted(self):
+        """IntegrationConfig should handle None API keys correctly."""
+        integrations = IntegrationConfig(notion_api_key=None, tavily_api_key=None)
+        serialized = integrations.model_dump()
+
+        # None values should remain None
+        assert serialized["notion_api_key"] is None
+        assert serialized["tavily_api_key"] is None
+
 
 class TestScoutConfig:
     """Test cases for ScoutConfig root model."""

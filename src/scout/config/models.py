@@ -38,7 +38,7 @@ License: MIT
 
 from typing import Any, Dict, List, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
 
 
 class ModelConfig(BaseModel):
@@ -132,6 +132,24 @@ class ProviderConfig(BaseModel):
         description="Available models keyed by friendly name (e.g., 'flash', 'pro')",
         examples=[{"flash": {}, "pro": {}}],
     )
+
+    @field_validator("models")
+    @classmethod
+    def validate_models_not_empty(cls, models: Dict[str, ModelConfig]) -> Dict[str, ModelConfig]:
+        """Validate that provider has at least one model configured.
+
+        Args:
+            models: Dictionary of models for this provider
+
+        Returns:
+            Validated models dictionary
+
+        Raises:
+            ValueError: If models dictionary is empty
+        """
+        if not models:
+            raise ValueError("Provider must have at least one model configured")
+        return models
 
     @field_serializer("api_key")
     def redact_api_key(self, api_key: str) -> str:
@@ -328,20 +346,37 @@ class IntegrationConfig(BaseModel):
         ...     notion_api_key="secret_abc123",
         ...     tavily_api_key="tvly-xyz789"
         ... )
+        >>> integrations.model_dump()["notion_api_key"]  # Returns: "sec***" (redacted)
     """
 
     model_config = ConfigDict(frozen=True)
 
     notion_api_key: Optional[str] = Field(
         default=None,
-        description="Notion API key for workspace integration (optional)",
+        description="Notion API key for workspace integration (optional, auto-redacted)",
         examples=["secret_abc123def456"],
     )
     tavily_api_key: Optional[str] = Field(
         default=None,
-        description="Tavily API key for web search integration (optional)",
+        description="Tavily API key for web search integration (optional, auto-redacted)",
         examples=["tvly-abc123def456"],
     )
+
+    @field_serializer("notion_api_key", "tavily_api_key")
+    def redact_integration_keys(self, key: Optional[str]) -> Optional[str]:
+        """Redact integration API keys to first 3 characters + '***' for security.
+
+        Args:
+            key: Original API key value (or None)
+
+        Returns:
+            Redacted key in format "abc***" or None if key is None
+        """
+        if key is None:
+            return None
+        if len(key) <= 3:
+            return "***"
+        return f"{key[:3]}***"
 
 
 class ScoutConfig(BaseModel):
@@ -403,3 +438,41 @@ class ScoutConfig(BaseModel):
         default_factory=IntegrationConfig,
         description="Optional third-party service integrations",
     )
+
+    @field_validator("providers")
+    @classmethod
+    def validate_providers_not_empty(
+        cls, providers: Dict[str, ProviderConfig]
+    ) -> Dict[str, ProviderConfig]:
+        """Validate that at least one AI provider is configured.
+
+        Args:
+            providers: Dictionary of provider configurations
+
+        Returns:
+            Validated providers dictionary
+
+        Raises:
+            ValueError: If providers dictionary is empty
+        """
+        if not providers:
+            raise ValueError("Configuration must have at least one AI provider")
+        return providers
+
+    @field_validator("teams")
+    @classmethod
+    def validate_teams_not_empty(cls, teams: Dict[str, TeamConfig]) -> Dict[str, TeamConfig]:
+        """Validate that at least one team is configured.
+
+        Args:
+            teams: Dictionary of team configurations
+
+        Returns:
+            Validated teams dictionary
+
+        Raises:
+            ValueError: If teams dictionary is empty
+        """
+        if not teams:
+            raise ValueError("Configuration must have at least one team")
+        return teams

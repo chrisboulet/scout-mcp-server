@@ -1,0 +1,16 @@
+# Invalid configuration - provider with empty models dictionary
+# Should raise validation error
+
+providers:
+  gemini:
+    api_key: "sk-test-key"
+    models: {}  # INVALID: Empty models dict (must have at least one model)
+
+teams:
+  general:
+    description: "General team"
+    primary:
+      provider: "gemini"
+      model: "flash"  # This will fail because no models exist
+
+tool_team_mapping: {}

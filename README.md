@@ -760,23 +760,26 @@ detect-secrets scan
 - [x] **MCP server core** ✅ (28 integration tests, 100% pass)
 - [x] **Server entry point** ✅ (main.py with CLI)
 
-### Phase 2: Core Tools & Integration (Current)
-- [ ] Chat tool implementation
-- [ ] State manager (Redis)
+### Phase 2: Core Tools & Integration ✅ COMPLETE
+- [x] **Chat tool** ✅ (Full AI provider integration)
+- [x] **State manager** ✅ (Redis-based)
+- [x] **Code Analyzer** ✅ (AST + AI insights, 33 tests, 90.36% coverage)
+- [x] **Deep Analyst** 🔍 ✅ (Hypothesis-driven investigation, 2 tests)
+- [x] **Strategic Planner** 📋 ✅ (Iterative planning, tested)
+- [x] **Consensus Builder** 🤝 ✅ (Multi-provider synthesis, tested)
+
+### Phase 3: Integration & Documentation (Current)
 - [ ] Integration with Claude Desktop
 - [ ] Complete end-to-end testing
+- [x] **Consultant tools documentation** ✅ (docs/tools/consultant-tools.md)
+- [ ] Unit tests for consultant tools
+- [ ] API reference documentation
 
-### Phase 3: Essential Tools (Weeks 5-6)
-- [ ] apilookup
-- [ ] planner
-- [ ] analyse
-- [ ] thinkdeep
-
-### Phase 4: Advanced Tools (Weeks 7-8)
-- [ ] consensus
-- [ ] challenge
-- [ ] secaudit
-- [ ] refactor
+### Phase 4: Additional Tools (Future)
+- [ ] API lookup tool
+- [ ] Security audit tool
+- [ ] Refactoring assistant
+- [ ] Challenge/critique tool
 
 ---
 

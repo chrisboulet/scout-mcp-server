@@ -22,6 +22,10 @@ from scout.providers.base import (
 
 # Import providers as they are implemented
 from scout.providers.gemini import GeminiProvider
+from scout.providers.openai import OpenAIProvider
+from scout.providers.anthropic import AnthropicProvider
+from scout.providers.openrouter import OpenRouterProvider
+from scout.providers.grok import GrokProvider
 
 __all__ = [
     # Base classes
@@ -38,4 +42,8 @@ __all__ = [
     "ModelNotAvailableException",
     # Provider implementations
     "GeminiProvider",
+    "OpenAIProvider",
+    "AnthropicProvider",
+    "OpenRouterProvider",
+    "GrokProvider",
 ]

@@ -1,0 +1,89 @@
+# Team configuration with scout, architect, and expert teams
+# Tests team definitions with primary models and validators
+
+providers:
+  gemini:
+    api_key: "sk-test-gemini"
+    models:
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+        temperature: 0.7
+      pro:
+        id: "gemini-2.0-pro-exp"
+        max_tokens: 32768
+        temperature: 0.5
+
+  openai:
+    api_key: "sk-test-openai"
+    models:
+      gpt4o:
+        id: "gpt-4o"
+        max_tokens: 16384
+        temperature: 0.7
+
+  anthropic:
+    api_key: "sk-test-anthropic"
+    models:
+      claude:
+        id: "claude-3-5-sonnet-20241022"
+        max_tokens: 8192
+        temperature: 0.7
+
+teams:
+  scout:
+    description: "Scout team for quick exploration and initial analysis"
+    primary:
+      provider: "gemini"
+      model: "flash"
+    validators:
+      - provider: "openai"
+        model: "gpt4o"
+        trigger: "on_error"
+    use_cases:
+      - "quick_research"
+      - "initial_exploration"
+
+  architect:
+    description: "Architect team for system design and architecture decisions"
+    primary:
+      provider: "gemini"
+      model: "pro"
+    validators:
+      - provider: "anthropic"
+        model: "claude"
+        trigger: "always"
+      - provider: "openai"
+        model: "gpt4o"
+        trigger: "random"
+    use_cases:
+      - "system_design"
+      - "architecture_review"
+
+  expert:
+    description: "Expert team for deep analysis and consensus-based decisions"
+    primary:
+      provider: "anthropic"
+      model: "claude"
+    validators:
+      - provider: "gemini"
+        model: "pro"
+        trigger: "always"
+    use_cases:
+      - "deep_analysis"
+      - "consensus_decision"
+
+tool_team_mapping:
+  quick_research: "scout"
+  system_design: "architect"
+  deep_analysis: "expert"
+
+system:
+  default_team: "scout"
+  request_timeout_seconds: 90
+  max_retries: 3
+  cache_ttl_seconds: 7200
+
+integrations:
+  notion_api_key: null
+  tavily_api_key: null

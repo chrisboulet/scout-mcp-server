@@ -1,0 +1,31 @@
+# Invalid configuration - team validator references non-existent model
+# Should raise validation error
+
+providers:
+  gemini:
+    api_key: "sk-test-key"
+    models:
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+
+  openai:
+    api_key: "sk-test-key"
+    models:
+      gpt4o:
+        id: "gpt-4o"
+        max_tokens: 16384
+
+teams:
+  analyst:
+    description: "Analysis team"
+    primary:
+      provider: "gemini"
+      model: "flash"
+    validators:
+      - provider: "openai"
+        model: "gpt5"  # INVALID: Model 'gpt5' does not exist in openai provider
+        trigger: "always"
+
+tool_team_mapping:
+  analyze: "analyst"

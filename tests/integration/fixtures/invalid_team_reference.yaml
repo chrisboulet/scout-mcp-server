@@ -1,0 +1,21 @@
+# Invalid configuration - team references non-existent provider
+# Should raise validation error during cross-reference validation
+
+providers:
+  gemini:
+    api_key: "sk-test-key"
+    models:
+      flash:
+        id: "gemini-2.0-flash-exp"
+        max_tokens: 8192
+
+teams:
+  analyst:
+    description: "Code analysis team"
+    primary:
+      provider: "openai"  # INVALID: Provider 'openai' not defined in providers
+      model: "gpt4o"
+    validators: []
+
+tool_team_mapping:
+  analyze_code: "analyst"

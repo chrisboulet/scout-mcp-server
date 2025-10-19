@@ -38,7 +38,7 @@ License: MIT
 
 from typing import Any, Dict, List, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator, model_validator
 
 
 class ModelConfig(BaseModel):
@@ -476,3 +476,58 @@ class ScoutConfig(BaseModel):
         if not teams:
             raise ValueError("Configuration must have at least one team")
         return teams
+
+    @model_validator(mode="after")
+    def validate_cross_references(self) -> "ScoutConfig":
+        """Validate cross-references between teams, providers, and tool mappings.
+
+        This validator ensures referential integrity across the configuration:
+        - Team primary models reference existing providers and models
+        - Team validator models reference existing providers and models
+        - Tool team mappings reference existing teams
+
+        Returns:
+            Validated ScoutConfig instance
+
+        Raises:
+            ValueError: If any cross-reference is invalid
+        """
+        # Validate team primary and validator references (T068, T069, T070)
+        for team_name, team in self.teams.items():
+            # Validate primary model exists
+            if team.primary.provider not in self.providers:
+                raise ValueError(
+                    f"Team '{team_name}' primary references non-existent provider "
+                    f"'{team.primary.provider}'"
+                )
+
+            provider = self.providers[team.primary.provider]
+            if team.primary.model not in provider.models:
+                raise ValueError(
+                    f"Team '{team_name}' primary references non-existent model "
+                    f"'{team.primary.model}' in provider '{team.primary.provider}'"
+                )
+
+            # Validate all validators reference existing providers and models
+            for idx, validator in enumerate(team.validators):
+                if validator.provider not in self.providers:
+                    raise ValueError(
+                        f"Team '{team_name}' validator {idx} references non-existent provider "
+                        f"'{validator.provider}'"
+                    )
+
+                validator_provider = self.providers[validator.provider]
+                if validator.model not in validator_provider.models:
+                    raise ValueError(
+                        f"Team '{team_name}' validator {idx} references non-existent model "
+                        f"'{validator.model}' in provider '{validator.provider}'"
+                    )
+
+        # Validate tool_team_mapping references existing teams (T073)
+        for tool_name, team_name in self.tool_team_mapping.items():
+            if team_name not in self.teams:
+                raise ValueError(
+                    f"Tool '{tool_name}' mapped to non-existent team '{team_name}'"
+                )
+
+        return self

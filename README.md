@@ -689,11 +689,47 @@ source .env  # macOS/Linux
 
 ---
 
-## 📝 License
+## 📜 License & Attribution
 
-MIT License - Copyright (c) 2025 Christian Boulet, Boulet Stratégies TI
+SCOUT is licensed under the [Apache License 2.0](LICENSE).
+
+### Third-Party Components
+
+This project includes components derived from:
+- **[Zen MCP Server](https://github.com/BeehiveInnovations/zen-mcp-server)** by BeehiveInnovations (Apache 2.0)
+
+Zen MCP Server provides the foundational architecture for multi-model AI orchestration, tool registry patterns, and provider abstraction. SCOUT extends this foundation with YAML-based configuration, Redis state management, and specialized tools for Fractional CTO workflows.
+
+For complete attribution and licensing information, see [NOTICE](NOTICE).
+
+### Why Apache 2.0?
+
+Apache 2.0 provides:
+- ✅ **Commercial use freedom** - Boulet Stratégies TI can monetize SCOUT services
+- ✅ **Patent protection** - Built-in patent grant protects users and contributors
+- ✅ **Clear attribution** - Transparent acknowledgment of original work
+- ✅ **Modification transparency** - Changes must be documented
+- ✅ **Compatible with proprietary extensions** - Clients can build private modules
+
+This license allows Boulet Stratégies TI clients to use, modify, and integrate SCOUT while maintaining legal clarity and flexibility.
+
+### Copyright Notice
+
+```
+SCOUT - Strategic CTO Operations and Unified Tooling
+Copyright 2025 Christian Boulet / Boulet Stratégies TI
+
+Portions derived from Zen MCP Server
+Copyright BeehiveInnovations
+```
+
+For questions about licensing or commercial use:
+- Email: christian@bouletstrategies.com
+- Website: https://bouletstrategies.com
 
 ---
+
+
 
 ## 📧 Contact
 

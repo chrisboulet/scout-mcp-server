@@ -1,0 +1,79 @@
+SCOUT - Strategic CTO Operations and Unified Tooling
+Copyright 2025 Christian Boulet / Boulet Stratégies TI
+
+This product includes software developed at Boulet Stratégies TI
+(https://bouletstrategies.com).
+
+=========================================================================
+THIRD-PARTY SOFTWARE NOTICES AND ATTRIBUTION
+=========================================================================
+
+This project includes components derived from:
+
+1. Zen MCP Server
+   - Copyright: BeehiveInnovations
+   - License: Apache License 2.0
+   - Repository: https://github.com/BeehiveInnovations/zen-mcp-server
+   - Description: Provides foundational architecture for multi-model AI
+                  orchestration, tool registry patterns, and provider abstraction.
+
+   SCOUT extends Zen MCP Server's foundation with:
+   - YAML-based configuration system
+   - Redis state management
+   - Specialized tools for Fractional CTO workflows
+   - Custom provider implementations
+   - Team-based model selection
+
+2. FastMCP
+   - Copyright: FastMCP Contributors
+   - License: MIT
+   - Repository: https://github.com/runvnc/fastmcp
+   - Description: Provides Model Context Protocol (MCP) server implementation
+
+3. Pydantic
+   - Copyright: Samuel Colvin
+   - License: MIT
+   - Repository: https://github.com/pydantic/pydantic
+   - Description: Data validation using Python type annotations
+
+=========================================================================
+MODIFICATIONS AND EXTENSIONS
+=========================================================================
+
+SCOUT represents substantial modifications and extensions to the original
+Zen MCP Server, including but not limited to:
+
+- Complete configuration system redesign using YAML
+- Integration of Redis for state management
+- Custom tool implementations for business analysis
+- Team-based model selection and validation
+- Enhanced error handling and retry logic
+- Specification-driven development framework (SpecKit)
+- Constitution-based governance system
+
+For a complete list of modifications, see docs/legal/MODIFICATIONS.md
+
+=========================================================================
+LICENSE
+=========================================================================
+
+SCOUT is licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+=========================================================================
+CONTACT INFORMATION
+=========================================================================
+
+For questions about this product or its licensing:
+- Email: christian@bouletstrategies.com
+- Website: https://bouletstrategies.com
+- GitHub: https://github.com/BouletStratiges/SCOUT

@@ -1,36 +1,27 @@
 <!--
-Sync Impact Report - 2025-10-18
+Sync Impact Report - 2025-10-19
 
-VERSION CHANGE: Template → 1.0.0 (Initial ratification)
+VERSION CHANGE: 1.0.0 → 1.1.0 (MINOR - Added licensing principle)
 
 MODIFIED PRINCIPLES:
-- All principles newly defined from template placeholders
+- None modified, all existing principles retained
 
 ADDED SECTIONS:
-1. Contract-First Development (MCP Protocol)
-2. Modular Architecture
-3. Mandatory Testing
-4. Auto-Generated Documentation
-5. Robust Error Handling
-6. Structured Logging
-7. Provider Abstraction & Multi-Model Teams
-
-NEW SECTIONS:
-- Technology Stack
-- Security Requirements
-- Governance
+- VIII. Open Source Licensing Compliance (Apache 2.0)
 
 TEMPLATES STATUS:
 ✅ plan-template.md - Reviewed, compatible with constitution checks
 ✅ spec-template.md - Reviewed, user story approach aligns
 ✅ tasks-template.md - Reviewed, task categorization compatible
+✅ All command templates - No updates required
 
 FOLLOW-UP TODOS:
 - None - All placeholders filled
 
-RATIONALE FOR VERSION 1.0.0:
-Initial constitution ratification for SCOUT project, establishing governance
-framework for MCP-based AI orchestration server development.
+RATIONALE FOR VERSION 1.1.0:
+Added new principle VIII for Apache 2.0 licensing compliance as requested by user.
+This is a MINOR bump because it adds material new guidance about licensing
+requirements that affect how the project must be distributed and attributed.
 -->
 
 # SCOUT Constitution
@@ -254,6 +245,56 @@ teams:
 configuration enables cost/quality tradeoffs without code changes. Validators provide
 consensus on critical decisions.
 
+### VIII. Open Source Licensing Compliance (Apache 2.0)
+
+**SCOUT is licensed under Apache 2.0 and MUST maintain full compliance.**
+
+All source files, documentation, and distributions MUST:
+1. **Include license headers**: Every source file contains Apache 2.0 header with copyright
+2. **Maintain attribution**: Properly credit Zen MCP Server and other derived works
+3. **Document modifications**: Track all changes from original sources
+4. **Provide legal notices**: Include LICENSE, NOTICE, and THIRD_PARTY_LICENSES files
+
+Required file header format:
+```python
+# Copyright 2025 Christian Boulet / Boulet Stratégies TI
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+```
+
+Attribution requirements:
+- **NOTICE file**: Lists all third-party components and their licenses
+- **THIRD_PARTY_LICENSES**: Full text of all dependency licenses
+- **docs/legal/ATTRIBUTION.md**: Detailed attribution for derived works
+- **docs/legal/MODIFICATIONS.md**: Document all modifications from originals
+
+Apache 2.0 benefits:
+- Commercial use permitted (monetization allowed)
+- Patent grant protection for users and contributors
+- Clear modification tracking requirements
+- Compatible with proprietary extensions
+
+**Prohibited**:
+- Removing attribution from derived works
+- Misrepresenting origin or authorship
+- Using project trademarks without permission
+- Claiming endorsement without authorization
+
+**Rationale**: Apache 2.0 licensing ensures legal clarity for commercial use while
+respecting the open source origins of the project. Proper attribution maintains
+trust and enables collaboration. The patent grant protects all parties from
+intellectual property disputes.
+
 ## Technology Stack
 
 **Language**: Python 3.11+ (asyncio for concurrent AI calls)
@@ -366,6 +407,8 @@ Pull request checklist:
 - [ ] Error handling includes recovery strategies
 - [ ] MCP schema validated (no breaking changes without version bump)
 - [ ] Performance acceptable (no regressions in benchmarks)
+- [ ] Apache 2.0 license headers present on all new files
+- [ ] Attribution maintained for any derived code
 
 **III. Quality Gates**
 
@@ -375,6 +418,7 @@ Before merging to `main`:
 - Integration tests pass with mocked providers
 - Documentation generated successfully
 - Security scan clean (Bandit, Safety)
+- License compliance verified (headers, attribution)
 
 ## Governance
 
@@ -398,6 +442,7 @@ take precedence.
 - Code reviews MUST verify adherence to testing requirements (Principle III)
 - Complexity MUST be justified against simplicity principle
 - Use `.specify/templates/` for all feature specifications
+- License headers MUST be present on all source files (Principle VIII)
 
 **Versioning Policy**:
 - Constitution version increments independently of code version
@@ -408,7 +453,8 @@ take precedence.
 - Exceptions to constitution require explicit documentation in PR
 - Temporary exceptions MUST include sunset date and migration plan
 - No exceptions allowed for Principle III (Mandatory Testing)
+- No exceptions allowed for Principle VIII (Licensing Compliance)
 
 ---
 
-**Version**: 1.0.0 | **Ratified**: 2025-10-18 | **Last Amended**: 2025-10-18
+**Version**: 1.1.0 | **Ratified**: 2025-10-18 | **Last Amended**: 2025-10-19

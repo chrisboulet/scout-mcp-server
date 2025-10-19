@@ -385,18 +385,16 @@ ASSUMPTIONS:
         """Query a single provider."""
         messages = [Message(role=Role.USER, content=prompt)]
 
-        # Select model from team context
-        model = team_context.get("model", "unknown") if team_context else "unknown"
-
+        # Use provider's default model (don't use team_context model which is specific to one provider)
+        # Each provider will use its own default model
         logger.debug(
             f"Querying provider {provider_name}",
-            model=model,
             tool="consensus_builder"
         )
 
         response = await provider.chat(
             messages=messages,
-            model=model,
+            model=None,  # Use provider's default model
             temperature=0.3,  # Lower temperature for consistency
             max_tokens=2000
         )

@@ -217,12 +217,12 @@ async def run_info(server: ScoutMCPServer) -> int:
         await server.cleanup()
 
 
-async def run_server(
+def run_server_sync(
     config_path: Optional[Path] = None,
     debug: bool = False
 ) -> int:
     """
-    Run the SCOUT MCP server.
+    Run the SCOUT MCP server (synchronous wrapper).
 
     Args:
         config_path: Path to configuration file
@@ -257,8 +257,16 @@ async def run_server(
             providers=len(server.config.providers)
         )
 
-        # Run server
-        await server.run()
+        # Initialize server first (sync initialization)
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(server.initialize())
+        loop.close()
+
+        # Now let FastMCP handle its own event loop
+        # This calls anyio.run() internally which creates a fresh event loop
+        server.mcp.run()
 
         return 0
 
@@ -292,31 +300,24 @@ def main() -> int:
     # Configure logging
     configure_logging(debug=args.debug)
 
-    # Create event loop
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
     try:
-        # Create server
-        server = ScoutMCPServer(config_path=args.config)
-
         # Run appropriate command
         if args.health_check:
-            return loop.run_until_complete(run_health_check(server))
+            server = ScoutMCPServer(config_path=args.config)
+            return asyncio.run(run_health_check(server))
         elif args.info:
-            return loop.run_until_complete(run_info(server))
+            server = ScoutMCPServer(config_path=args.config)
+            return asyncio.run(run_info(server))
         else:
-            return loop.run_until_complete(run_server(
+            # Run server - uses synchronous wrapper to avoid event loop conflicts
+            return run_server_sync(
                 config_path=args.config,
                 debug=args.debug
-            ))
+            )
 
     except Exception as e:
         print(f"\n❌ Fatal Error: {e}")
         return 1
-
-    finally:
-        loop.close()
 
 
 if __name__ == "__main__":

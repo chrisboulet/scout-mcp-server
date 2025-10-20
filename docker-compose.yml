@@ -76,7 +76,10 @@ services:
         - VERSION=${VERSION:-0.1.0}
 
     container_name: scout-mcp
-    restart: unless-stopped
+    restart: "no"  # MCP STDIO servers exit after initialization without client
+
+    # Override default command to specify config path
+    command: ["python", "-m", "scout.main", "--config", "/app/config/scout.yaml"]
 
     # Environment variables from .env file
     env_file:
@@ -85,6 +88,7 @@ services:
     # Override specific environment variables
     environment:
       - SCOUT_ENV=production
+      - REDIS_URL=redis://redis:6379
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
@@ -105,13 +109,13 @@ services:
       redis:
         condition: service_healthy
 
-    # Health check
-    healthcheck:
-      test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, '/app/src'); from scout.server import ScoutMCPServer; import asyncio; server = ScoutMCPServer(); asyncio.run(server.initialize()); exit(0)"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    # Health check (disabled for now - causes asyncio conflict)
+    # healthcheck:
+    #   test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, '/app/src'); from scout.server import ScoutMCPServer; import asyncio; server = ScoutMCPServer(); asyncio.run(server.initialize()); exit(0)"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
 
     # Resource limits
     deploy:

@@ -74,9 +74,34 @@ GROK_API_KEY=xai-...
 REDIS_URL=redis://localhost:6379
 ```
 
-### 3. Setup Redis
+### 3. Deployment Options
 
-**Option A: Docker (Recommended)**
+#### Option A: Docker Compose (Recommended) 🐳
+
+The easiest way to run SCOUT with all dependencies:
+
+```bash
+# 1. Copy environment template
+cp .env.example .env
+
+# 2. Edit .env and add your API keys
+# Required: At least one AI provider API key
+
+# 3. Start SCOUT + Redis
+docker-compose up -d
+
+# 4. Check logs
+docker-compose logs -f scout
+
+# 5. Health check
+docker-compose exec scout python -m scout.main --health-check
+```
+
+**See [DOCKER.md](DOCKER.md) for complete Docker deployment guide.**
+
+#### Option B: Redis Only (Docker)
+
+If you prefer to run SCOUT locally but use containerized Redis:
 
 ```bash
 # Run Redis container
@@ -90,7 +115,9 @@ docker exec scout-redis redis-cli ping
 # Expected output: PONG
 ```
 
-**Option B: Local Installation**
+Then continue with steps 4-6 below.
+
+#### Option C: Local Installation
 
 **Windows:**
 ```powershell
@@ -121,7 +148,7 @@ sudo systemctl start redis
 sudo systemctl enable redis
 ```
 
-**Option C: Cloud Redis (Upstash)**
+#### Option D: Cloud Redis (Upstash)
 
 1. Create free account at [Upstash](https://upstash.com/)
 2. Create Redis database

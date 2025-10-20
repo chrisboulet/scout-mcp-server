@@ -1,0 +1,150 @@
+# Copyright 2025 Christian Boulet / Boulet Stratégies TI
+# Licensed under the Apache License, Version 2.0
+
+# ==============================================================================
+# SCOUT MCP Server - Docker Compose Configuration
+# ==============================================================================
+# This compose file sets up the complete SCOUT stack:
+#   - SCOUT MCP Server
+#   - Redis (for state management)
+#
+# Usage:
+#   docker-compose up -d          # Start in background
+#   docker-compose logs -f scout  # View logs
+#   docker-compose down           # Stop and remove containers
+#   docker-compose down -v        # Stop and remove volumes (CAUTION: deletes data)
+#
+# Prerequisites:
+#   1. Copy .env.example to .env
+#   2. Configure your API keys in .env
+#   3. Run: docker-compose up -d
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ============================================================================
+  # Redis - State Management & Caching
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: scout-redis
+    restart: unless-stopped
+
+    # Ports (exposed for debugging only - not required for SCOUT)
+    ports:
+      - "6379:6379"
+
+    # Persistent storage
+    volumes:
+      - redis_data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+
+    # Custom configuration
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+    networks:
+      - scout-network
+
+  # ============================================================================
+  # SCOUT MCP Server
+  # ============================================================================
+  scout:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_DATE=${BUILD_DATE:-2025-01-19}
+        - VERSION=${VERSION:-0.1.0}
+
+    container_name: scout-mcp
+    restart: unless-stopped
+
+    # Environment variables from .env file
+    env_file:
+      - .env
+
+    # Override specific environment variables
+    environment:
+      - SCOUT_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+
+    # Ports (for future HTTP API support)
+    ports:
+      - "3000:3000"
+
+    # Volumes
+    volumes:
+      # Configuration (read-only)
+      - ./config:/app/config:ro
+      # Logs (if file logging is enabled)
+      - ./logs:/app/logs
+
+    # Dependencies
+    depends_on:
+      redis:
+        condition: service_healthy
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, '/app/src'); from scout.server import ScoutMCPServer; import asyncio; server = ScoutMCPServer(); asyncio.run(server.initialize()); exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+    # Logging configuration
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    networks:
+      - scout-network
+
+# ==============================================================================
+# Networks
+# ==============================================================================
+networks:
+  scout-network:
+    driver: bridge
+    name: scout-network
+
+# ==============================================================================
+# Volumes
+# ==============================================================================
+volumes:
+  redis_data:
+    driver: local
+    name: scout-redis-data
